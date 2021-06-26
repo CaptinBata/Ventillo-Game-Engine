@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>C-Sharp</id>
+    <version>1.0.0</version>
+    <authors>C-Sharp</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="SFML.Net" version="2.5.0" exclude="Build,Analyzers" />
+        <dependency id="sfml-graphics" version="2.4.2" exclude="Build,Analyzers" />
+        <dependency id="sfml-network" version="2.4.2" exclude="Build,Analyzers" />
+        <dependency id="sfml-system" version="2.4.2" exclude="Build,Analyzers" />
+        <dependency id="sfml-window" version="2.4.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="F:\Code\Ventillo-Game-Engine\C-Sharp\bin\Debug\net5.0\C-Sharp.runtimeconfig.json" target="lib\net5.0\C-Sharp.runtimeconfig.json" />
+    <file src="F:\Code\Ventillo-Game-Engine\C-Sharp\bin\Debug\net5.0\C-Sharp.dll" target="lib\net5.0\C-Sharp.dll" />
+  </files>
+</package>
