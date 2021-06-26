@@ -1,0 +1,4 @@
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.AssemblyInfoInputs.cache
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.AssemblyInfo.cs
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.csproj.CoreCompileInputs.cache

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "wPlLD3KfuvgKmZWO+00Oka4H/QXxyZkz/8PIBweUSA8u/KvKrCujhW8iX/7F5NiySvslRy5wViak6cl84szgQQ==",
+  "success": true,
+  "projectFilePath": "F:\\Code\\Ventillo-Game-Engine\\C-Sharp\\Ventillo\\Ventillo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\csfml\\2.5.0\\csfml.2.5.0.nupkg.sha512",
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\sfml.audio\\2.5.0\\sfml.audio.2.5.0.nupkg.sha512",
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\sfml.graphics\\2.5.0\\sfml.graphics.2.5.0.nupkg.sha512",
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\sfml.net\\2.5.0\\sfml.net.2.5.0.nupkg.sha512",
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\sfml.system\\2.5.0\\sfml.system.2.5.0.nupkg.sha512",
+    "C:\\Users\\Nykolas Bata\\.nuget\\packages\\sfml.window\\2.5.0\\sfml.window.2.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
