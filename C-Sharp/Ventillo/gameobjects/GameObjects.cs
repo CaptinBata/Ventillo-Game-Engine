@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SFML.Graphics;
+using SFML.System;
+
+using Ventillo;
 using Ventillo.Utils;
 
 namespace Ventillo.GameObjects
@@ -12,8 +15,8 @@ namespace Ventillo.GameObjects
     public struct DrawObject
     {
         public List<Vector> DrawPoints;
-        public string FillColour;
-        public string StrokeColour;
+        public uint FillColour;
+        public uint StrokeColour;
         public MinMax? MinMax;
         public string? text;
     }
@@ -23,7 +26,6 @@ namespace Ventillo.GameObjects
         Vector Position = null;
         bool ToDelete = false;
         MinMax MinMax;
-        List<ConvexShape> SFMLShapes = new List<ConvexShape>();
 
         public GameObject(Vector Position)
         {
@@ -175,6 +177,74 @@ namespace Ventillo.GameObjects
         public double GetHeight()
         {
             return this.MinMax.Max.y - this.MinMax.Min.y;
+        }
+
+        protected void DrawAPixel(Vector Position)
+        {
+            ConvexShape TempShape = new ConvexShape();
+            TempShape.Position = new Vector2f().UseVentilloVector(Position);
+
+            TempShape.SetPoint(0, new Vector2f(-0.5f, 0.5f));
+            TempShape.SetPoint(1, new Vector2f(0.5f, 0.5f));
+            TempShape.SetPoint(2, new Vector2f(0.5f, -0.5f));
+            TempShape.SetPoint(3, new Vector2f(-0.5f, -0.5f));
+
+            Engine.Window.Draw(TempShape);
+        }
+
+        protected void DrawByLine(List<DrawObject> Drawobjects)
+        {
+            foreach (DrawObject Drawable in DrawObjects)
+            {
+                ConvexShape TempShape = new ConvexShape();
+
+                uint index = 0;
+                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                {
+                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(this.ToGlobalCoords(DrawPoint)));
+                    index++;
+                }
+
+                this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                Engine.Window.Draw(TempShape);
+            }
+        }
+
+        protected void DrawByText(List<DrawObject> Drawobjects)
+        {
+
+        }
+
+        protected void DrawByPixel(List<DrawObject> Drawobjects)
+        {
+            foreach (DrawObject Drawable in Drawobjects)
+            {
+                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                {
+                    ConvexShape TempShape = new ConvexShape();
+
+                    TempShape.SetPoint(0, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) + 0.5f));
+                    TempShape.SetPoint(1, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) + 0.5f));
+                    TempShape.SetPoint(2, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) - 0.5f));
+                    TempShape.SetPoint(3, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) - 0.5f));
+
+                    this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                    Engine.Window.Draw(TempShape);
+                }
+            }
+        }
+
+        protected void setDrawModes(ConvexShape TempShape, uint StrokeStyle, uint FillStyle)
+        {
+            if (StrokeStyle != 0)
+            {
+                TempShape.OutlineColor = new Color(StrokeStyle);
+            }
+
+            if (FillStyle != 0)
+            {
+                TempShape.FillColor = new Color(FillStyle);
+            }
         }
     }
 
