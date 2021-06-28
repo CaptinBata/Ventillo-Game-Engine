@@ -31,10 +31,10 @@ namespace Ventillo.GameObjects
     }
     public class GameObject
     {
-        List<DrawObject> DrawObjects = new List<DrawObject>();
-        Vector Position = null;
-        bool ToDelete = false;
-        MinMax MinMax;
+        protected List<DrawObject> DrawObjects = new List<DrawObject>();
+        protected Vector Position = null;
+        protected bool ToDelete = false;
+        protected MinMax MinMax;
 
         public GameObject(Vector Position)
         {
