@@ -9,8 +9,13 @@ namespace Ventillo.GameObjects
 {
     public class MinMax
     {
-        public  Vector Min;
+        public Vector Min;
         public Vector Max;
+
+        public MinMax()
+        {
+
+        }
 
         public MinMax(Vector Min, Vector Max)
         {

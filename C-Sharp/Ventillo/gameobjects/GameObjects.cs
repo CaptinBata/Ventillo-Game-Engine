@@ -15,10 +15,19 @@ namespace Ventillo.GameObjects
     public struct DrawObject
     {
         public List<Vector> DrawPoints;
-        public uint FillColour;
-        public uint StrokeColour;
+        public Color FillColour;
+        public Color StrokeColour;
         public MinMax? MinMax;
-        public string? text;
+        public string? Text;
+
+        public DrawObject(List<Vector> drawPoints, Color fillColor, Color strokeColour, MinMax minMax = null, string text = "")
+        {
+            DrawPoints = drawPoints;
+            FillColour = fillColor;
+            StrokeColour = strokeColour;
+            MinMax = minMax;
+            Text = text;
+        }
     }
     public class GameObject
     {
@@ -39,7 +48,7 @@ namespace Ventillo.GameObjects
             this.MinMax = null;
         }
 
-        private void SetDrawObject(List<DrawObject> DrawObjects)
+        protected void SetDrawObject(List<DrawObject> DrawObjects)
         {
             this.DrawObjects = DrawObjects;
             this.GetObjectBounds();
@@ -156,7 +165,7 @@ namespace Ventillo.GameObjects
 
         public void draw()
         {
-            this.DrawByLine();
+            this.DrawByLine(this.DrawObjects);
         }
 
         public Vector ToGlobalCoords(Vector localVector)
@@ -222,6 +231,7 @@ namespace Ventillo.GameObjects
                 foreach (Vector DrawPoint in Drawable.DrawPoints)
                 {
                     ConvexShape TempShape = new ConvexShape();
+                    TempShape.Position = new Vector2f().UseVentilloVector(DrawPoint);
 
                     TempShape.SetPoint(0, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) + 0.5f));
                     TempShape.SetPoint(1, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) + 0.5f));
@@ -234,16 +244,16 @@ namespace Ventillo.GameObjects
             }
         }
 
-        protected void setDrawModes(ConvexShape TempShape, uint StrokeStyle, uint FillStyle)
+        protected void setDrawModes(ConvexShape TempShape, Color StrokeStyle, Color FillStyle)
         {
-            if (StrokeStyle != 0)
+            if (StrokeStyle != null)
             {
-                TempShape.OutlineColor = new Color(StrokeStyle);
+                TempShape.OutlineColor = StrokeStyle;
             }
 
-            if (FillStyle != 0)
+            if (FillStyle != null)
             {
-                TempShape.FillColor = new Color(FillStyle);
+                TempShape.FillColor = FillStyle;
             }
         }
     }
