@@ -192,6 +192,7 @@ namespace Ventillo.GameObjects
         {
             ConvexShape TempShape = new ConvexShape();
             TempShape.Position = new Vector2f().UseVentilloVector(Position);
+            TempShape.SetPointCount(4);
 
             TempShape.SetPoint(0, new Vector2f(-0.5f, 0.5f));
             TempShape.SetPoint(1, new Vector2f(0.5f, 0.5f));
@@ -206,11 +207,14 @@ namespace Ventillo.GameObjects
             foreach (DrawObject Drawable in DrawObjects)
             {
                 ConvexShape TempShape = new ConvexShape();
+                TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
 
                 uint index = 0;
+                TempShape.SetPointCount((uint)(Drawable.DrawPoints.Count));
+
                 foreach (Vector DrawPoint in Drawable.DrawPoints)
                 {
-                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(this.ToGlobalCoords(DrawPoint)));
+                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(DrawPoint));
                     index++;
                 }
 
@@ -231,7 +235,8 @@ namespace Ventillo.GameObjects
                 foreach (Vector DrawPoint in Drawable.DrawPoints)
                 {
                     ConvexShape TempShape = new ConvexShape();
-                    TempShape.Position = new Vector2f().UseVentilloVector(DrawPoint);
+                    TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
+                    TempShape.SetPointCount(4);
 
                     TempShape.SetPoint(0, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) + 0.5f));
                     TempShape.SetPoint(1, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) + 0.5f));
@@ -244,7 +249,22 @@ namespace Ventillo.GameObjects
             }
         }
 
-        protected void setDrawModes(ConvexShape TempShape, Color StrokeStyle, Color FillStyle)
+        protected void DrawByCircle(List<DrawObject> DrawObjects)
+        {
+            foreach (DrawObject Drawable in this.DrawObjects)
+            {
+                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                {
+                    CircleShape TempShape = new CircleShape((float)(DrawPoint.x));
+                    TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
+
+                    this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                    Engine.Window.Draw(TempShape);
+                }
+            }
+        }
+
+        protected void setDrawModes(Shape TempShape, Color StrokeStyle, Color FillStyle)
         {
             if (StrokeStyle != null)
             {
