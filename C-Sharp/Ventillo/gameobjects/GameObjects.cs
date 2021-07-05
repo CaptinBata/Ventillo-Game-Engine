@@ -36,6 +36,8 @@ namespace Ventillo.GameObjects
         protected bool ToDelete = false;
         protected MinMax MinMax;
 
+        protected Font font = null;
+
         public GameObject(Vector Position)
         {
             this.Position = Position;
@@ -223,9 +225,38 @@ namespace Ventillo.GameObjects
             }
         }
 
-        protected void DrawByText(List<DrawObject> Drawobjects)
+        public Font LoadFont(string fontPath)
         {
+            Font font = null;
+            try
+            {
+                return font = new Font(fontPath);
+            }
+            catch (Exception error)
+            {
+                throw new Exception($"Failed to load font ${font}. Exception: {error}");
+            }
+        }
 
+        private Font LoadDebugText()
+        {
+            return new Font("../fonts/Gill Sans MT.tff");
+        }
+
+        protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
+        {
+            if (this.font != null)
+                this.font = this.LoadDebugText();
+
+            Text SFMLtext = new Text(text, this.font, fontSize);
+
+            // set the color
+            SFMLtext.FillColor = colour;
+
+            // set the text style
+            SFMLtext.Style = Text.Styles.Regular;
+
+            Engine.Window.Draw(SFMLtext);
         }
 
         protected void DrawByPixel(List<DrawObject> Drawobjects)
