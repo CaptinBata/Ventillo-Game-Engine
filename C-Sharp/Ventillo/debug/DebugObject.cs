@@ -16,7 +16,7 @@ namespace Ventillo.Debug
         private double LastTime = 0;
         private double FPS = 0;
 
-        DebugObject(Vector position, MinMax playableArea) : base(position)
+        public DebugObject(Vector position, MinMax playableArea) : base(position)
         {
             double xMidPosition = playableArea.Min.x + ((playableArea.Max.x - playableArea.Min.x) / 2);
             double yMidPosition = playableArea.Min.y + ((playableArea.Max.y - playableArea.Min.y) / 2);
