@@ -18,9 +18,9 @@ namespace Ventillo
 {
     internal class CoRoutine
     {
-        string type { get; set; }
-        IEnumerable fn { get; set; }
-        public CoRoutine(string type, IEnumerable fn)
+        public string type { get; set; }
+        public IEnumerator fn { get; set; }
+        public CoRoutine(string type, IEnumerator fn)
         {
             this.type = type;
             this.fn = fn;
@@ -86,12 +86,12 @@ namespace Ventillo
             Engine.scenes.Add(game);
         }
 
-        void StartInternalCoRoutine(IEnumerable coRoutine)
+        void StartInternalCoRoutine(IEnumerator coRoutine)
         {
             Engine.coroutines.Add(new CoRoutine("Engine", coRoutine));
         }
 
-        void StartCoRoutine(IEnumerable coRoutine)
+        void StartCoRoutine(IEnumerator coRoutine)
         {
             Engine.coroutines.Add(new CoRoutine("Game", coRoutine));
         }
@@ -109,9 +109,9 @@ namespace Ventillo
         static IEnumerable WaitForSeconds(double seconds)
         {
             var secsInMilli = seconds * 1000;
-            var now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            var now = new DateTime().GetTimeInMilliseconds();
 
-            while ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - now < secsInMilli)
+            while ((new DateTime().GetTimeInMilliseconds()) - now < secsInMilli)
             {
                 yield return null;
             }
@@ -119,7 +119,7 @@ namespace Ventillo
             yield return null;
         }
 
-        IEnumerable CheckForNextScene()
+        IEnumerator CheckForNextScene()
         {
             while (true)
             {
@@ -134,7 +134,7 @@ namespace Ventillo
             }
         }
 
-        IEnumerable CheckForNullObjects()
+        IEnumerator CheckForNullObjects()
         {
             while (true)
             {
@@ -147,6 +147,109 @@ namespace Ventillo
                 }
                 yield return null;
             }
+        }
+
+        void Draw()
+        {
+            this.ClearScreen();
+            this.game.draw();
+            this.DrawDebug();
+        }
+
+        void DrawDebug()
+        {
+            if (this.debug)
+            {
+                foreach (var gameObject in this.game.gameObjects)
+                {
+                    this.debugObject.DrawObjectBounds(gameObject);
+                }
+                this.debugObject.Draw();
+            }
+        }
+
+        void Update()
+        {
+            this.game.update();
+
+            this.CheckDebug();
+
+            this.debugObject.UpdateFPS(new DateTime().GetTimeInMilliseconds());
+
+            Engine.keys.Clear();
+
+            Engine.mouseClickPositions.Clear();
+        }
+
+        void ExecuteCoRoutines()
+        {
+            foreach (var coRoutine in Engine.coroutines)
+            {
+                if (!coRoutine.fn.MoveNext())
+                {
+                    Engine.coroutines.Remove(coRoutine);
+                }
+            }
+        }
+
+        void GameLoop()
+        {
+            while (Engine.window.IsOpen)
+            {
+                if (this.runGame)
+                {
+                    Engine.window.DispatchEvents();
+                    this.Update();
+                    this.ExecuteCoRoutines();
+                    this.Draw();
+                }
+            }
+        }
+
+        void CheckDebug()
+        {
+            foreach (var key in Engine.keys)
+            {
+                switch (key)
+                {
+                    case "q":
+                        this.debug = !this.debug;
+                        Engine.keys.Remove(key);
+                        break;
+                }
+            }
+        }
+
+        void SetupEvents()
+        {
+            Engine.window.Closed += (object sender, EventArgs e) =>
+            {
+                Engine.window.Close();
+                this.runGame = false;
+            };
+
+            Engine.window.KeyPressed += (object sender, KeyEventArgs e) =>
+            {
+                Engine.keys.Add(e.Code.ToString());
+            };
+
+            Engine.window.MouseButtonPressed += (object sender, MouseButtonEventArgs e) =>
+            {
+                Engine.mouseClickPositions.Add(new Vector(e.X, e.Y));
+            };
+        }
+
+        void SetupEngine()
+        {
+            Engine.playableArea = new MinMax(
+                new Vector(Engine.GetWindowWidth() * 0.15, Engine.GetWindowHeight() * 0.10),
+                new Vector(Engine.GetWindowWidth() * 0.85, Engine.GetWindowHeight() * 0.9)
+            );
+        }
+
+        void ClearScreen()
+        {
+            Engine.window.Clear();
         }
     }
 }

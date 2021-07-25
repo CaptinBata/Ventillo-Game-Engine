@@ -7,7 +7,7 @@ using Ventillo.GameObjects;
 
 namespace Ventillo.Interfaces
 {
-    interface IGame
+    public interface IGame
     {
         List<GameObject> gameObjects { get; set; }
         void checkDelete();

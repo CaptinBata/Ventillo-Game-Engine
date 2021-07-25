@@ -31,10 +31,10 @@ namespace Ventillo.GameObjects
     }
     public class GameObject
     {
-        protected List<DrawObject> DrawObjects = new List<DrawObject>();
-        protected Vector Position = null;
-        protected bool ToDelete = false;
-        protected MinMax MinMax;
+        public List<DrawObject> DrawObjects = new List<DrawObject>();
+        public Vector Position = null;
+        public bool ToDelete = false;
+        public MinMax MinMax;
 
         protected Font font = null;
 
@@ -165,7 +165,7 @@ namespace Ventillo.GameObjects
             this.AssignTotalObjectBounds();
         }
 
-        public void draw()
+        public void Draw()
         {
             this.DrawByLine(this.DrawObjects);
         }
@@ -201,7 +201,7 @@ namespace Ventillo.GameObjects
             TempShape.SetPoint(2, new Vector2f(0.5f, -0.5f));
             TempShape.SetPoint(3, new Vector2f(-0.5f, -0.5f));
 
-            Engine.Window.Draw(TempShape);
+            Engine.window.Draw(TempShape);
         }
 
         protected void DrawByLine(List<DrawObject> Drawobjects)
@@ -221,7 +221,7 @@ namespace Ventillo.GameObjects
                 }
 
                 this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
-                Engine.Window.Draw(TempShape);
+                Engine.window.Draw(TempShape);
             }
         }
 
@@ -256,7 +256,7 @@ namespace Ventillo.GameObjects
             // set the text style
             SFMLtext.Style = Text.Styles.Regular;
 
-            Engine.Window.Draw(SFMLtext);
+            Engine.window.Draw(SFMLtext);
         }
 
         protected void DrawByPixel(List<DrawObject> Drawobjects)
@@ -275,7 +275,7 @@ namespace Ventillo.GameObjects
                     TempShape.SetPoint(3, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) - 0.5f));
 
                     this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
-                    Engine.Window.Draw(TempShape);
+                    Engine.window.Draw(TempShape);
                 }
             }
         }
@@ -290,7 +290,7 @@ namespace Ventillo.GameObjects
                     TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
 
                     this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
-                    Engine.Window.Draw(TempShape);
+                    Engine.window.Draw(TempShape);
                 }
             }
         }
