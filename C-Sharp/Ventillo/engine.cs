@@ -49,7 +49,7 @@ namespace Ventillo
 
             this.SetupEngine();
             this.SetupEvents();
-            this.debugObject = new DebugObject(new Vector(0, 0), Engine.playableArea);
+            this.debugObject = new DebugObject(new Vector(0, 0), playableArea);
         }
 
         public void SetGame(IGame game)
@@ -60,7 +60,7 @@ namespace Ventillo
 
         public void Start()
         {
-            Engine.logger.Info("Engine started", new { });
+            logger.Info("Engine started", new { });
 
             this.StartInternalCoRoutine(this.CheckForNextScene());
             this.StartInternalCoRoutine(this.CheckForNullObjects());
@@ -71,56 +71,61 @@ namespace Ventillo
         public void Stop()
         {
             this.runGame = false;
-            for (var CoRoutineIndex = 0; CoRoutineIndex < Engine.coroutines.Count; CoRoutineIndex++)
+            for (var CoRoutineIndex = 0; CoRoutineIndex < coroutines.Count; CoRoutineIndex++)
             {
-                var coRoutine = Engine.coroutines.ElementAt(CoRoutineIndex);
+                var coRoutine = coroutines.ElementAt(CoRoutineIndex);
 
                 if (coRoutine.type == "Game")
                 {
-                    Engine.coroutines.Remove(coRoutine);
+                    coroutines.Remove(coRoutine);
                 }
             }
 
-            Engine.keys.Clear();
+            keys.Clear();
 
             this.game = null;
         }
 
         static public void SwitchScene(IGame game)
         {
-            Engine.scenes.Add(game);
+            scenes.Add(game);
         }
 
         void StartInternalCoRoutine(IEnumerator coRoutine)
         {
-            Engine.coroutines.Add(new CoRoutine("Engine", coRoutine));
+            coroutines.Add(new CoRoutine("Engine", coRoutine));
         }
 
         void StartCoRoutine(IEnumerator coRoutine)
         {
-            Engine.coroutines.Add(new CoRoutine("Game", coRoutine));
+            coroutines.Add(new CoRoutine("Game", coRoutine));
         }
 
         static public double GetWindowWidth()
         {
-            return Engine.window.Size.X;
+            return window.Size.X;
         }
 
         static public double GetWindowHeight()
         {
-            return Engine.window.Size.Y;
+            return window.Size.Y;
         }
 
-        static IEnumerable WaitForSeconds(double seconds)
+        static IEnumerator InternalWaitForSeconds(double seconds)
         {
             var secsInMilli = seconds * 1000;
             var now = new DateTime().GetTimeInMilliseconds();
 
-            while ((new DateTime().GetTimeInMilliseconds()) - now < secsInMilli)
+            while (new DateTime().GetTimeInMilliseconds() - now < secsInMilli)
             {
                 yield return null;
             }
+        }
 
+        static IEnumerator WaitForSeconds(double seconds)
+        {
+            var wait = InternalWaitForSeconds(seconds);
+            while (wait.MoveNext()) { }
             yield return null;
         }
 
@@ -128,11 +133,11 @@ namespace Ventillo
         {
             while (true)
             {
-                if (Engine.scenes.Count > 0)
+                if (scenes.Count > 0)
                 {
                     this.Stop();
-                    this.SetGame(Engine.scenes.Last());
-                    Engine.scenes.Remove(Engine.scenes.Last());
+                    this.SetGame(scenes.Last());
+                    scenes.Remove(scenes.Last());
                 }
 
                 yield return null;
@@ -184,52 +189,52 @@ namespace Ventillo
 
             this.debugObject.UpdateFPS(new DateTime().GetTimeInMilliseconds());
 
-            Engine.keys.Clear();
+            keys.Clear();
 
-            Engine.mouseClickPositions.Clear();
+            mouseClickPositions.Clear();
         }
 
         void ExecuteCoRoutines()
         {
-            for (var CoRoutineIndex = 0; CoRoutineIndex < Engine.coroutines.Count; CoRoutineIndex++)
+            for (var CoRoutineIndex = 0; CoRoutineIndex < coroutines.Count; CoRoutineIndex++)
             {
-                var coRoutine = Engine.coroutines.ElementAt(CoRoutineIndex);
+                var coRoutine = coroutines.ElementAt(CoRoutineIndex);
 
                 if (!coRoutine.fn.MoveNext())
                 {
-                    Engine.coroutines.Remove(coRoutine);
+                    coroutines.Remove(coRoutine);
                 }
             }
         }
 
         void GameLoop()
         {
-            while (Engine.window.IsOpen)
+            while (window.IsOpen)
             {
                 if (this.runGame)
                 {
-                    Engine.window.DispatchEvents();
+                    window.DispatchEvents();
 
                     this.Update();
                     this.ExecuteCoRoutines();
                     this.Draw();
 
-                    Engine.window.Display();
+                    window.Display();
                 }
             }
         }
 
         void CheckDebug()
         {
-            for (var keyIndex = 0; keyIndex < Engine.keys.Count; keyIndex++)
+            for (var keyIndex = 0; keyIndex < keys.Count; keyIndex++)
             {
-                var key = Engine.keys.ElementAt(keyIndex);
+                var key = keys.ElementAt(keyIndex);
 
                 switch (key)
                 {
-                    case "q":
+                    case "Q":
                         this.debug = !this.debug;
-                        Engine.keys.Remove(key);
+                        keys.Remove(key);
                         break;
                 }
             }
@@ -237,40 +242,40 @@ namespace Ventillo
 
         void SetupEvents()
         {
-            Engine.window.Closed += (object sender, EventArgs e) =>
+            window.Closed += (object sender, EventArgs e) =>
             {
-                Engine.window.Close();
+                window.Close();
                 this.runGame = false;
             };
 
-            Engine.window.KeyPressed += (object sender, KeyEventArgs e) =>
+            window.KeyPressed += (object sender, KeyEventArgs e) =>
             {
-                Engine.keys.Add(e.Code.ToString());
+                keys.Add(e.Code.ToString());
             };
 
-            Engine.window.MouseButtonPressed += (object sender, MouseButtonEventArgs e) =>
+            window.MouseButtonPressed += (object sender, MouseButtonEventArgs e) =>
             {
-                Engine.mouseClickPositions.Add(new Vector(e.X, e.Y));
+                mouseClickPositions.Add(new Vector(e.X, e.Y));
             };
         }
 
         void SetupEngine()
         {
-            Engine.window = new RenderWindow(new VideoMode(1280, 720), "Ventillo Engine");
+            window = new RenderWindow(new VideoMode(1280, 720), "Ventillo Engine");
 
-            Engine.window.SetFramerateLimit(this.FPSLimit);
+            window.SetFramerateLimit(this.FPSLimit);
 
-            Engine.logger = new Logger(LoggerLevels.DEBUG);
+            logger = new Logger(LoggerLevels.DEBUG);
 
-            Engine.playableArea = new MinMax(
-                new Vector(Engine.GetWindowWidth() * 0.15, Engine.GetWindowHeight() * 0.10),
-                new Vector(Engine.GetWindowWidth() * 0.85, Engine.GetWindowHeight() * 0.9)
+            playableArea = new MinMax(
+                new Vector(GetWindowWidth() * 0.15, GetWindowHeight() * 0.10),
+                new Vector(GetWindowWidth() * 0.85, GetWindowHeight() * 0.9)
             );
         }
 
         void ClearScreen()
         {
-            Engine.window.Clear();
+            window.Clear();
         }
     }
 }

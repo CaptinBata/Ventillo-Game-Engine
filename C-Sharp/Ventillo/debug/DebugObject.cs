@@ -31,7 +31,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x + 1, playableArea.Max.y),
                         new Vector(playableArea.Min.x - 1, playableArea.Max.y),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
                 new DrawObject(
@@ -41,7 +41,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x, playableArea.Min.y + 1),
                         new Vector(playableArea.Min.x, playableArea.Min.y + 1),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
                 new DrawObject(
@@ -51,7 +51,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x - 1, playableArea.Max.y),
                         new Vector(playableArea.Max.x - 1, playableArea.Min.y),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
                 new DrawObject(
@@ -61,7 +61,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x, playableArea.Max.y + 1),
                         new Vector(playableArea.Min.x, playableArea.Max.y - 1),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
                 new DrawObject(
@@ -71,7 +71,7 @@ namespace Ventillo.Debug
                         new Vector(xMidPosition + 1, playableArea.Max.y),
                         new Vector(xMidPosition - 1, playableArea.Max.y),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
                 new DrawObject(
@@ -81,7 +81,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x, yMidPosition + 1),
                         new Vector(playableArea.Min.x, yMidPosition + 1),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(0.45)),
+                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
                     new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
                 ),
             };
@@ -112,7 +112,7 @@ namespace Ventillo.Debug
             this.DrawByText(
                 $"FPS {this.FPS}",
                 new Vector(Engine.GetWindowWidth() * 0.96, Engine.GetWindowHeight() * 0.99),
-                new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45))
+                new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115))
             );
         }
 
@@ -130,7 +130,7 @@ namespace Ventillo.Debug
             TempShape.SetPoint(2, new Vector2f().UseVentilloVector(maxGlobal));
             TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minGlobal.x, maxGlobal.y)));
 
-            this.setDrawModes(TempShape, null, new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45)));
+            this.setDrawModes(TempShape, null, new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
             Engine.window.Draw(TempShape);
 
             for (var drawableIndex = 0; drawableIndex < objectToDraw.DrawObjects.Count; drawableIndex++)
@@ -149,7 +149,7 @@ namespace Ventillo.Debug
                 TempShapeObj.SetPoint(2, new Vector2f().UseVentilloVector(maxObjGlobal));
                 TempShapeObj.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minObjGlobal.x, maxObjGlobal.y)));
 
-                this.setDrawModes(TempShapeObj, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45)));
+                this.setDrawModes(TempShapeObj, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
                 Engine.window.Draw(TempShapeObj);
             }
         }
