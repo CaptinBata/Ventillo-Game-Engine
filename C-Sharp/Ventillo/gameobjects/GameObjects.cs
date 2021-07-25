@@ -97,28 +97,32 @@ namespace Ventillo.GameObjects
 
         private void AssignIndividualObjectBounds()
         {
-            foreach (DrawObject DrawObject in this.DrawObjects)
+            for (var drawObjectIndex = 0; drawObjectIndex < this.DrawObjects.Count; drawObjectIndex++)
             {
+                var drawObject = this.DrawObjects.ElementAt(drawObjectIndex);
+
                 Vector Min = new Vector(double.MaxValue, double.MaxValue);
                 Vector Max = new Vector(double.MinValue, double.MinValue);
 
-                foreach (Vector Point in DrawObject.DrawPoints)
+                for (var pointIndex = 0; pointIndex < drawObject.DrawPoints.Count; pointIndex++)
                 {
-                    if (Point.x < Min.x)
-                        Min = new Vector(Point.x, Min.y);
-                    if (Point.y < Min.y)
-                        Min = new Vector(Min.x, Point.y);
+                    var point = drawObject.DrawPoints.ElementAt(pointIndex);
+
+                    if (point.x < Min.x)
+                        Min = new Vector(point.x, Min.y);
+                    if (point.y < Min.y)
+                        Min = new Vector(Min.x, point.y);
 
 
-                    if (Point.x > Max.x)
-                        Max = new Vector(Point.x, Max.y);
-                    if (Point.y > Max.y)
-                        Max = new Vector(Max.x, Point.y);
+                    if (point.x > Max.x)
+                        Max = new Vector(point.x, Max.y);
+                    if (point.y > Max.y)
+                        Max = new Vector(Max.x, point.y);
                 };
 
                 MinMax MinMax = new MinMax(Min, Max);
 
-                var index = this.DrawObjects.IndexOf(DrawObject);
+                var index = this.DrawObjects.IndexOf(drawObject);
                 var OldMinMax = this.DrawObjects.ElementAt(index);
                 var NewMinMax = OldMinMax;
 
@@ -165,7 +169,7 @@ namespace Ventillo.GameObjects
             this.AssignTotalObjectBounds();
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             this.DrawByLine(this.DrawObjects);
         }
@@ -295,16 +299,16 @@ namespace Ventillo.GameObjects
             }
         }
 
-        protected void setDrawModes(Shape TempShape, Color StrokeStyle, Color FillStyle)
+        protected void setDrawModes(Shape TempShape, Color? StrokeStyle, Color? FillStyle)
         {
             if (StrokeStyle != null)
             {
-                TempShape.OutlineColor = StrokeStyle;
+                TempShape.OutlineColor = (Color)StrokeStyle;
             }
 
             if (FillStyle != null)
             {
-                TempShape.FillColor = FillStyle;
+                TempShape.FillColor = (Color)FillStyle;
             }
         }
     }

@@ -2,17 +2,17 @@ using System;
 
 namespace Ventillo.Debug
 {
-    enum LoggerLevels
+    public enum LoggerLevels
     {
         DEBUG,
         INFO,
         WARN,
         ERROR
     }
-    class Logger
+    public class Logger
     {
         LoggerLevels level;
-        Logger(LoggerLevels level)
+        public Logger(LoggerLevels level)
         {
             this.level = level;
         }

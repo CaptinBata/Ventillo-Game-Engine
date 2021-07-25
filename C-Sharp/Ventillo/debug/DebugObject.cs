@@ -105,7 +105,7 @@ namespace Ventillo.Debug
             this.LastTime = timestamp;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             this.DrawByLine(this.DrawObjects);
 
@@ -130,7 +130,7 @@ namespace Ventillo.Debug
             TempShape.SetPoint(2, new Vector2f().UseVentilloVector(maxGlobal));
             TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minGlobal.x, maxGlobal.y)));
 
-            this.setDrawModes(TempShape, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45)));
+            this.setDrawModes(TempShape, null, new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45)));
             Engine.window.Draw(TempShape);
 
             foreach (var drawable in objectToDraw.DrawObjects)

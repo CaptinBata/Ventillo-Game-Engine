@@ -27,7 +27,7 @@ namespace Ventillo
         }
 
     }
-    internal class Engine
+    public class Engine
     {
         static internal RenderWindow window;
         static public List<string> keys = new List<string>();
@@ -241,6 +241,10 @@ namespace Ventillo
 
         void SetupEngine()
         {
+            Engine.window = new RenderWindow(new VideoMode(1280, 720), "Ventillo Engine");
+
+            Engine.logger = new Logger(LoggerLevels.DEBUG);
+
             Engine.playableArea = new MinMax(
                 new Vector(Engine.GetWindowWidth() * 0.15, Engine.GetWindowHeight() * 0.10),
                 new Vector(Engine.GetWindowWidth() * 0.85, Engine.GetWindowHeight() * 0.9)
