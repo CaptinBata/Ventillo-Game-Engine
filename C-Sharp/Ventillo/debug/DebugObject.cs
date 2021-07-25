@@ -32,7 +32,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x - 1, playableArea.Max.y),
                     },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
                 new DrawObject(
                     new List<Vector>(){
@@ -42,7 +42,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x, playableArea.Min.y + 1),
                     },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
                 new DrawObject(
                     new List<Vector>(){
@@ -52,7 +52,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x - 1, playableArea.Min.y),
                     },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
                 new DrawObject(
                     new List<Vector>(){
@@ -62,7 +62,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x, playableArea.Max.y - 1),
                         },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
                 new DrawObject(
                     new List<Vector>(){
@@ -72,7 +72,7 @@ namespace Ventillo.Debug
                         new Vector(xMidPosition - 1, playableArea.Max.y),
                         },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
                 new DrawObject(
                     new List<Vector>(){
@@ -82,7 +82,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x, yMidPosition + 1),
                         },
                     new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
-                    new Color(Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0),Convert.ToByte(0))
+                    new Color()
                 ),
             };
 
@@ -111,7 +111,7 @@ namespace Ventillo.Debug
 
             this.DrawByText(
                 $"FPS {this.FPS}",
-                new Vector(Engine.GetWindowWidth() * 0.96, Engine.GetWindowHeight() * 0.99),
+                new Vector(Engine.GetWindowWidth() * 0.95, Engine.GetWindowHeight() * 0.98),
                 new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115))
             );
         }

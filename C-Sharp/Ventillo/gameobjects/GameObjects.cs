@@ -250,15 +250,17 @@ namespace Ventillo.GameObjects
 
         private Font LoadDebugText()
         {
-            return new Font("../fonts/Gill Sans MT.tff");
+            return new Font("fonts/GIL_____.ttf");
         }
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
         {
-            if (this.font != null)
+            if (this.font == null)
                 this.font = this.LoadDebugText();
 
             Text SFMLtext = new Text(text, this.font, fontSize);
+
+            SFMLtext.Position = new Vector2f().UseVentilloVector(position);
 
             // set the color
             SFMLtext.FillColor = colour;

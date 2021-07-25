@@ -9,4 +9,29 @@
     <ProjectReference Include="..\Ventillo\Ventillo.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="fonts\GILBI___.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fonts\GILB____.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fonts\GILC____.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fonts\GILI____.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fonts\GIL_____.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fonts\GLSNECB.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

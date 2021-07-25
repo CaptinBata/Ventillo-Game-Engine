@@ -79,3 +79,9 @@ F:\Code\Ventillo-Game-Engine\C-Sharp\Example\obj\Debug\net5.0\Example.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Example\obj\Debug\net5.0\ref\Example.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Example\obj\Debug\net5.0\Example.pdb
 F:\Code\Ventillo-Game-Engine\C-Sharp\Example\obj\Debug\net5.0\Example.genruntimeconfig.cache
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GILBI___.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GILB____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GILC____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GILI____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GIL_____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Example\bin\Debug\net5.0\Fonts\GLSNECB.TTF
