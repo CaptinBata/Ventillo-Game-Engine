@@ -41,9 +41,12 @@ namespace Ventillo
         bool runGame = false;
         DebugObject debugObject;
         IGame game;
+        uint FPSLimit = 0;
 
-        public Engine()
+        public Engine(uint FPSLimit)
         {
+            this.FPSLimit = FPSLimit;
+
             this.SetupEngine();
             this.SetupEvents();
             this.debugObject = new DebugObject(new Vector(0, 0), Engine.playableArea);
@@ -68,8 +71,10 @@ namespace Ventillo
         public void Stop()
         {
             this.runGame = false;
-            foreach (var coRoutine in Engine.coroutines)
+            for (var CoRoutineIndex = 0; CoRoutineIndex < Engine.coroutines.Count; CoRoutineIndex++)
             {
+                var coRoutine = Engine.coroutines.ElementAt(CoRoutineIndex);
+
                 if (coRoutine.type == "Game")
                 {
                     Engine.coroutines.Remove(coRoutine);
@@ -138,8 +143,10 @@ namespace Ventillo
         {
             while (true)
             {
-                foreach (var gameObject in this.game.gameObjects)
+                for (var gameObjectIndex = 0; gameObjectIndex < this.game.gameObjects.Count; gameObjectIndex++)
                 {
+                    var gameObject = this.game.gameObjects.ElementAt(gameObjectIndex);
+
                     if (gameObject == null)
                     {
                         this.game.gameObjects.Remove(gameObject);
@@ -152,7 +159,7 @@ namespace Ventillo
         void Draw()
         {
             this.ClearScreen();
-            this.game.draw();
+            this.game.Draw();
             this.DrawDebug();
         }
 
@@ -160,8 +167,9 @@ namespace Ventillo
         {
             if (this.debug)
             {
-                foreach (var gameObject in this.game.gameObjects)
+                for (var gameObjectIndex = 0; gameObjectIndex < this.game.gameObjects.Count; gameObjectIndex++)
                 {
+                    var gameObject = this.game.gameObjects.ElementAt(gameObjectIndex);
                     this.debugObject.DrawObjectBounds(gameObject);
                 }
                 this.debugObject.Draw();
@@ -170,7 +178,7 @@ namespace Ventillo
 
         void Update()
         {
-            this.game.update();
+            this.game.Update();
 
             this.CheckDebug();
 
@@ -183,8 +191,10 @@ namespace Ventillo
 
         void ExecuteCoRoutines()
         {
-            foreach (var coRoutine in Engine.coroutines)
+            for (var CoRoutineIndex = 0; CoRoutineIndex < Engine.coroutines.Count; CoRoutineIndex++)
             {
+                var coRoutine = Engine.coroutines.ElementAt(CoRoutineIndex);
+
                 if (!coRoutine.fn.MoveNext())
                 {
                     Engine.coroutines.Remove(coRoutine);
@@ -199,17 +209,22 @@ namespace Ventillo
                 if (this.runGame)
                 {
                     Engine.window.DispatchEvents();
+
                     this.Update();
                     this.ExecuteCoRoutines();
                     this.Draw();
+
+                    Engine.window.Display();
                 }
             }
         }
 
         void CheckDebug()
         {
-            foreach (var key in Engine.keys)
+            for (var keyIndex = 0; keyIndex < Engine.keys.Count; keyIndex++)
             {
+                var key = Engine.keys.ElementAt(keyIndex);
+
                 switch (key)
                 {
                     case "q":
@@ -242,6 +257,8 @@ namespace Ventillo
         void SetupEngine()
         {
             Engine.window = new RenderWindow(new VideoMode(1280, 720), "Ventillo Engine");
+
+            Engine.window.SetFramerateLimit(this.FPSLimit);
 
             Engine.logger = new Logger(LoggerLevels.DEBUG);
 

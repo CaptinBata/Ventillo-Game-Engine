@@ -8,26 +8,26 @@ namespace Example
 {
     class Example : IGame
     {
-        public List<GameObject> gameObjects { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<GameObject> gameObjects = new List<GameObject>();
 
-        public void checkDelete()
+        protected override void CheckDelete()
         {
-            throw new NotImplementedException();
+
         }
 
-        public void draw()
+        public override void Draw()
         {
-            throw new NotImplementedException();
+
         }
 
-        public void update()
+        public override void Update()
         {
-            throw new NotImplementedException();
+
         }
     }
     class Program
     {
-        static Engine engine = new Engine();
+        static Engine engine = new Engine(60);
         static Example exampleGame = new Example();
         static void Main(string[] args)
         {

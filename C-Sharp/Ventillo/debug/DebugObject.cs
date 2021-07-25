@@ -133,8 +133,10 @@ namespace Ventillo.Debug
             this.setDrawModes(TempShape, null, new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(0.45)));
             Engine.window.Draw(TempShape);
 
-            foreach (var drawable in objectToDraw.DrawObjects)
+            for (var drawableIndex = 0; drawableIndex < objectToDraw.DrawObjects.Count; drawableIndex++)
             {
+                var drawable = objectToDraw.DrawObjects.ElementAt(drawableIndex);
+
                 var minObjGlobal = objectToDraw.ToGlobalCoords(drawable.MinMax.Min);
                 var maxObjGlobal = objectToDraw.ToGlobalCoords(drawable.MinMax.Max);
 

@@ -7,11 +7,11 @@ using Ventillo.GameObjects;
 
 namespace Ventillo.Interfaces
 {
-    public interface IGame
+    public class IGame
     {
-        List<GameObject> gameObjects { get; set; }
-        void checkDelete();
-        void update();
-        void draw();
+        public List<GameObject> gameObjects = new List<GameObject>();
+        protected virtual void CheckDelete() { }
+        public virtual void Update() { }
+        public virtual void Draw() { }
     }
 }

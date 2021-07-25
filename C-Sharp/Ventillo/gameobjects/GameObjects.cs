@@ -146,16 +146,18 @@ namespace Ventillo.GameObjects
             Vector Min = new Vector(double.MaxValue, double.MaxValue);
             Vector Max = new Vector(double.MinValue, double.MinValue);
 
-            foreach (DrawObject DrawObject in this.DrawObjects)
+            for (var drawObjectIndex = 0; drawObjectIndex < this.DrawObjects.Count; drawObjectIndex++)
             {
-                if (DrawObject.MinMax.Max.x > Max.x)
-                    Max = new Vector(DrawObject.MinMax.Max.x, Max.y);
-                if (DrawObject.MinMax.Max.y > Max.y)
-                    Max = new Vector(Max.x, DrawObject.MinMax.Max.y);
-                if (DrawObject.MinMax.Min.x < Min.x)
-                    Min = new Vector(DrawObject.MinMax.Min.x, Min.y);
-                if (DrawObject.MinMax.Min.y < Min.y)
-                    Min = new Vector(Min.x, DrawObject.MinMax.Min.y);
+                var drawObject = this.DrawObjects.ElementAt(drawObjectIndex);
+
+                if (drawObject.MinMax.Max.x > Max.x)
+                    Max = new Vector(drawObject.MinMax.Max.x, Max.y);
+                if (drawObject.MinMax.Max.y > Max.y)
+                    Max = new Vector(Max.x, drawObject.MinMax.Max.y);
+                if (drawObject.MinMax.Min.x < Min.x)
+                    Min = new Vector(drawObject.MinMax.Min.x, Min.y);
+                if (drawObject.MinMax.Min.y < Min.y)
+                    Min = new Vector(Min.x, drawObject.MinMax.Min.y);
             }
 
             MinMax MinMax = new MinMax(Min, Max);
@@ -210,21 +212,25 @@ namespace Ventillo.GameObjects
 
         protected void DrawByLine(List<DrawObject> Drawobjects)
         {
-            foreach (DrawObject Drawable in DrawObjects)
+            for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
             {
+                var drawable = Drawobjects.ElementAt(drawableIndex);
+
                 ConvexShape TempShape = new ConvexShape();
                 TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
 
                 uint index = 0;
-                TempShape.SetPointCount((uint)(Drawable.DrawPoints.Count));
+                TempShape.SetPointCount((uint)(drawable.DrawPoints.Count));
 
-                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
-                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(DrawPoint));
+                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+
+                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(drawPoint));
                     index++;
                 }
 
-                this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                 Engine.window.Draw(TempShape);
             }
         }
@@ -265,20 +271,24 @@ namespace Ventillo.GameObjects
 
         protected void DrawByPixel(List<DrawObject> Drawobjects)
         {
-            foreach (DrawObject Drawable in Drawobjects)
+            for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
             {
-                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                var drawable = Drawobjects.ElementAt(drawableIndex);
+
+                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
+                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+
                     ConvexShape TempShape = new ConvexShape();
                     TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
                     TempShape.SetPointCount(4);
 
-                    TempShape.SetPoint(0, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) + 0.5f));
-                    TempShape.SetPoint(1, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) + 0.5f));
-                    TempShape.SetPoint(2, new Vector2f((float)(DrawPoint.x) + 0.5f, (float)(DrawPoint.x) - 0.5f));
-                    TempShape.SetPoint(3, new Vector2f((float)(DrawPoint.x) - 0.5f, (float)(DrawPoint.x) - 0.5f));
+                    TempShape.SetPoint(0, new Vector2f((float)(drawPoint.x) - 0.5f, (float)(drawPoint.x) + 0.5f));
+                    TempShape.SetPoint(1, new Vector2f((float)(drawPoint.x) + 0.5f, (float)(drawPoint.x) + 0.5f));
+                    TempShape.SetPoint(2, new Vector2f((float)(drawPoint.x) + 0.5f, (float)(drawPoint.x) - 0.5f));
+                    TempShape.SetPoint(3, new Vector2f((float)(drawPoint.x) - 0.5f, (float)(drawPoint.x) - 0.5f));
 
-                    this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                    this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
                 }
             }
@@ -286,14 +296,18 @@ namespace Ventillo.GameObjects
 
         protected void DrawByCircle(List<DrawObject> DrawObjects)
         {
-            foreach (DrawObject Drawable in this.DrawObjects)
+            for (var drawableIndex = 0; drawableIndex < this.DrawObjects.Count; drawableIndex++)
             {
-                foreach (Vector DrawPoint in Drawable.DrawPoints)
+                var drawable = this.DrawObjects.ElementAt(drawableIndex);
+
+                for (var drawPointIndex = 0; drawableIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
-                    CircleShape TempShape = new CircleShape((float)(DrawPoint.x));
+                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+
+                    CircleShape TempShape = new CircleShape((float)(drawPoint.x));
                     TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
 
-                    this.setDrawModes(TempShape, Drawable.StrokeColour, Drawable.FillColour);
+                    this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
                 }
             }
