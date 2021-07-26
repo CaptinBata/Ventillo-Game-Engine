@@ -38,9 +38,9 @@ namespace Ventillo.GameObjects
 
         protected Font font = null;
 
-        public GameObject(Vector Position)
+        public GameObject(Vector position)
         {
-            this.Position = Position;
+            this.Position = position;
         }
 
         ~GameObject()
