@@ -6,7 +6,13 @@ F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\Ventillo.deps.jso
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\Ventillo.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\ref\Ventillo.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\Ventillo.pdb
-F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.csproj.AssemblyReference.cache
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\ref\Ventillo.dll
 F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.pdb
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GILBI___.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GILB____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GILC____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GILI____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GIL_____.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\bin\Debug\net5.0\debug\fonts\GLSNECB.TTF
+F:\Code\Ventillo-Game-Engine\C-Sharp\Ventillo\obj\Debug\net5.0\Ventillo.csproj.AssemblyReference.cache

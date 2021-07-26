@@ -130,7 +130,7 @@ namespace Ventillo.Debug
             TempShape.SetPoint(2, new Vector2f().UseVentilloVector(maxGlobal));
             TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minGlobal.x, maxGlobal.y)));
 
-            this.setDrawModes(TempShape, null, new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
+            this.setDrawModes(TempShape, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
             Engine.window.Draw(TempShape);
 
             for (var drawableIndex = 0; drawableIndex < objectToDraw.DrawObjects.Count; drawableIndex++)

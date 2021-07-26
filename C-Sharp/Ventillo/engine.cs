@@ -122,7 +122,7 @@ namespace Ventillo
             }
         }
 
-        static IEnumerator WaitForSeconds(double seconds)
+        static public IEnumerator WaitForSeconds(double seconds)
         {
             var wait = InternalWaitForSeconds(seconds);
             while (wait.MoveNext()) { }
@@ -257,6 +257,11 @@ namespace Ventillo
             {
                 mouseClickPositions.Add(new Vector(e.X, e.Y));
             };
+        }
+
+        public void SetWindowTitle(string title)
+        {
+            window.SetTitle(title);
         }
 
         void SetupEngine()

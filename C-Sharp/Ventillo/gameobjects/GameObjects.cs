@@ -45,20 +45,20 @@ namespace Ventillo.GameObjects
 
         ~GameObject()
         {
-            this.DrawObjects = null;
-            this.Position = null;
-            this.MinMax = null;
+            DrawObjects = null;
+            Position = null;
+            MinMax = null;
         }
 
         protected void SetDrawObject(List<DrawObject> DrawObjects)
         {
             this.DrawObjects = DrawObjects;
-            this.GetObjectBounds();
+            GetObjectBounds();
         }
 
         private MinMax GetMinMax()
         {
-            return this.MinMax;
+            return MinMax;
         }
 
         public virtual void CheckDelete(List<GameObject> GameObjects)
@@ -78,8 +78,8 @@ namespace Ventillo.GameObjects
             Vector OtherMinGlobal = other.ToGlobalCoords(other.GetMinMax().Min);
             Vector OtherMaxGlobal = other.ToGlobalCoords(other.GetMinMax().Max);
 
-            Vector ThisMinGlobal = this.ToGlobalCoords(this.GetMinMax().Min);
-            Vector ThisMaxGlobal = this.ToGlobalCoords(this.GetMinMax().Max);
+            Vector ThisMinGlobal = ToGlobalCoords(GetMinMax().Min);
+            Vector ThisMaxGlobal = ToGlobalCoords(GetMinMax().Max);
 
             if (OtherMinGlobal.x > ThisMinGlobal.x && OtherMinGlobal.x < ThisMaxGlobal.x)
                 collisions.MinX = true;
@@ -97,9 +97,9 @@ namespace Ventillo.GameObjects
 
         private void AssignIndividualObjectBounds()
         {
-            for (var drawObjectIndex = 0; drawObjectIndex < this.DrawObjects.Count; drawObjectIndex++)
+            for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
             {
-                var drawObject = this.DrawObjects.ElementAt(drawObjectIndex);
+                var drawObject = DrawObjects.ElementAt(drawObjectIndex);
 
                 Vector Min = new Vector(double.MaxValue, double.MaxValue);
                 Vector Max = new Vector(double.MinValue, double.MinValue);
@@ -122,23 +122,23 @@ namespace Ventillo.GameObjects
 
                 MinMax MinMax = new MinMax(Min, Max);
 
-                var index = this.DrawObjects.IndexOf(drawObject);
-                var OldMinMax = this.DrawObjects.ElementAt(index);
+                var index = DrawObjects.IndexOf(drawObject);
+                var OldMinMax = DrawObjects.ElementAt(index);
                 var NewMinMax = OldMinMax;
 
                 NewMinMax.MinMax = MinMax;
-                this.DrawObjects[index] = NewMinMax; //Assign each individual part of a drawObject's minMax
+                DrawObjects[index] = NewMinMax; //Assign each individual part of a drawObject's minMax
             }
         }
 
         private void RotateAroundPoint(Vector point, double angle)
         {
-            this.Position = Vector.rotateVectorAroundPoint(this.Position, point, angle);
+            Position = Vector.rotateVectorAroundPoint(Position, point, angle);
         }
 
         private void TranslatePosition(Vector otherVector)
         {
-            this.Position = Vector.translate(this.Position, otherVector);
+            Position = Vector.translate(Position, otherVector);
         }
 
         private void AssignTotalObjectBounds()
@@ -146,9 +146,9 @@ namespace Ventillo.GameObjects
             Vector Min = new Vector(double.MaxValue, double.MaxValue);
             Vector Max = new Vector(double.MinValue, double.MinValue);
 
-            for (var drawObjectIndex = 0; drawObjectIndex < this.DrawObjects.Count; drawObjectIndex++)
+            for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
             {
-                var drawObject = this.DrawObjects.ElementAt(drawObjectIndex);
+                var drawObject = DrawObjects.ElementAt(drawObjectIndex);
 
                 if (drawObject.MinMax.Max.x > Max.x)
                     Max = new Vector(drawObject.MinMax.Max.x, Max.y);
@@ -167,33 +167,33 @@ namespace Ventillo.GameObjects
 
         private void GetObjectBounds() //Used to find the AABB (Axis-Aligned Bounding Box). Basically the basic box around the object to be used as primitive hit detection
         {
-            this.AssignIndividualObjectBounds();
-            this.AssignTotalObjectBounds();
+            AssignIndividualObjectBounds();
+            AssignTotalObjectBounds();
         }
 
         public virtual void Draw()
         {
-            this.DrawByLine(this.DrawObjects);
+            DrawByLine(DrawObjects);
         }
 
         public Vector ToGlobalCoords(Vector localVector)
         {
-            return new Vector(this.Position.x + localVector.x, this.Position.y + localVector.y);
+            return new Vector(Position.x + localVector.x, Position.y + localVector.y);
         }
 
         public Vector ToLocalCoords(Vector globalVector)
         {
-            return new Vector(globalVector.x - this.Position.x, globalVector.y - this.Position.y);
+            return new Vector(globalVector.x - Position.x, globalVector.y - Position.y);
         }
 
         public double GetWidth()
         {
-            return this.MinMax.Max.x - this.MinMax.Min.x;
+            return MinMax.Max.x - MinMax.Min.x;
         }
 
         public double GetHeight()
         {
-            return this.MinMax.Max.y - this.MinMax.Min.y;
+            return MinMax.Max.y - MinMax.Min.y;
         }
 
         protected void DrawAPixel(Vector Position)
@@ -217,7 +217,7 @@ namespace Ventillo.GameObjects
                 var drawable = Drawobjects.ElementAt(drawableIndex);
 
                 ConvexShape TempShape = new ConvexShape();
-                TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
+                TempShape.Position = new Vector2f().UseVentilloVector(Position);
 
                 uint index = 0;
                 TempShape.SetPointCount((uint)(drawable.DrawPoints.Count));
@@ -230,35 +230,34 @@ namespace Ventillo.GameObjects
                     index++;
                 }
 
-                this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                 Engine.window.Draw(TempShape);
             }
         }
 
         public Font LoadFont(string fontPath)
         {
-            Font font = null;
             try
             {
-                return font = new Font(fontPath);
+                return new Font(fontPath);
             }
             catch (Exception error)
             {
-                throw new Exception($"Failed to load font ${font}. Exception: {error}");
+                throw new Exception($"Failed to load font ${fontPath}. Exception: {error}");
             }
         }
 
         private Font LoadDebugText()
         {
-            return new Font("fonts/GIL_____.ttf");
+            return new Font("debug/fonts/GIL_____.ttf");
         }
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
         {
-            if (this.font == null)
-                this.font = this.LoadDebugText();
+            if (font == null)
+                font = LoadDebugText();
 
-            Text SFMLtext = new Text(text, this.font, fontSize);
+            Text SFMLtext = new Text(text, font, fontSize);
 
             SFMLtext.Position = new Vector2f().UseVentilloVector(position);
 
@@ -282,15 +281,15 @@ namespace Ventillo.GameObjects
                     var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
                     ConvexShape TempShape = new ConvexShape();
-                    TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
+                    TempShape.Position = new Vector2f().UseVentilloVector(Position);
                     TempShape.SetPointCount(4);
 
-                    TempShape.SetPoint(0, new Vector2f((float)(drawPoint.x) - 0.5f, (float)(drawPoint.x) + 0.5f));
-                    TempShape.SetPoint(1, new Vector2f((float)(drawPoint.x) + 0.5f, (float)(drawPoint.x) + 0.5f));
-                    TempShape.SetPoint(2, new Vector2f((float)(drawPoint.x) + 0.5f, (float)(drawPoint.x) - 0.5f));
-                    TempShape.SetPoint(3, new Vector2f((float)(drawPoint.x) - 0.5f, (float)(drawPoint.x) - 0.5f));
+                    TempShape.SetPoint(0, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y + 0.5f)));
+                    TempShape.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y + 0.5f)));
+                    TempShape.SetPoint(2, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y - 0.5f)));
+                    TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y - 0.5f)));
 
-                    this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                    setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
                 }
             }
@@ -298,34 +297,28 @@ namespace Ventillo.GameObjects
 
         protected void DrawByCircle(List<DrawObject> DrawObjects)
         {
-            for (var drawableIndex = 0; drawableIndex < this.DrawObjects.Count; drawableIndex++)
+            for (var drawableIndex = 0; drawableIndex < DrawObjects.Count; drawableIndex++)
             {
-                var drawable = this.DrawObjects.ElementAt(drawableIndex);
+                var drawable = DrawObjects.ElementAt(drawableIndex);
 
                 for (var drawPointIndex = 0; drawableIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
                     var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
                     CircleShape TempShape = new CircleShape((float)(drawPoint.x));
-                    TempShape.Position = new Vector2f().UseVentilloVector(this.Position);
+                    TempShape.Position = new Vector2f().UseVentilloVector(Position);
 
-                    this.setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                    setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
                 }
             }
         }
 
-        protected void setDrawModes(Shape TempShape, Color? StrokeStyle, Color? FillStyle)
+        protected void setDrawModes(Shape TempShape, Color StrokeStyle, Color FillStyle)
         {
-            if (StrokeStyle != null)
-            {
-                TempShape.OutlineColor = (Color)StrokeStyle;
-            }
+            TempShape.OutlineColor = StrokeStyle;
 
-            if (FillStyle != null)
-            {
-                TempShape.FillColor = (Color)FillStyle;
-            }
+            TempShape.FillColor = FillStyle;
         }
     }
 
