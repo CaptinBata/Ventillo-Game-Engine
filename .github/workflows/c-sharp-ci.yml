@@ -1,4 +1,8 @@
-on: [push]
+on:
+  push:
+  pull_request:
+    branches:
+    - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -9,7 +13,7 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release
     - name: artifact build outputs
       uses: actions/upload-artifact@v2
       with:
@@ -22,4 +26,4 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Test
-      run: dotnet test --configuration Release --no-build
+      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release --no-build
