@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 
+using Ventillo.System;
 using Ventillo.GameObjects;
 using Ventillo.Utils;
+using Color = Ventillo.System.Color;
 
 namespace Ventillo.Debug
 {
@@ -31,7 +33,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x + 1, playableArea.Max.y),
                         new Vector(playableArea.Min.x - 1, playableArea.Max.y),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
                 new DrawObject(
@@ -41,7 +43,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x, playableArea.Min.y + 1),
                         new Vector(playableArea.Min.x, playableArea.Min.y + 1),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(155)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
                 new DrawObject(
@@ -51,7 +53,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x - 1, playableArea.Max.y),
                         new Vector(playableArea.Max.x - 1, playableArea.Min.y),
                     },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
                 new DrawObject(
@@ -61,7 +63,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Min.x, playableArea.Max.y + 1),
                         new Vector(playableArea.Min.x, playableArea.Max.y - 1),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
                 new DrawObject(
@@ -71,7 +73,7 @@ namespace Ventillo.Debug
                         new Vector(xMidPosition + 1, playableArea.Max.y),
                         new Vector(xMidPosition - 1, playableArea.Max.y),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
                 new DrawObject(
@@ -81,7 +83,7 @@ namespace Ventillo.Debug
                         new Vector(playableArea.Max.x, yMidPosition + 1),
                         new Vector(playableArea.Min.x, yMidPosition + 1),
                         },
-                    new Color(Convert.ToByte(209),Convert.ToByte(49),Convert.ToByte(17),Convert.ToByte(115)),
+                    new Color(209,49,17,155),
                     new Color()
                 ),
             };
@@ -112,44 +114,44 @@ namespace Ventillo.Debug
             this.DrawByText(
                 $"FPS {this.FPS}",
                 new Vector(Engine.GetWindowWidth() * 0.95, Engine.GetWindowHeight() * 0.98),
-                new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115))
+                new Color(209, 49, 17, 155)
             );
         }
 
         public void DrawObjectBounds(GameObject objectToDraw)
         {
-            var minGlobal = objectToDraw.ToGlobalCoords(objectToDraw.MinMax.Min);
-            var maxGlobal = objectToDraw.ToGlobalCoords(objectToDraw.MinMax.Max);
+            var min =objectToDraw.MinMax.Min;
+            var max = objectToDraw.MinMax.Max;
 
             ConvexShape TempShape = new ConvexShape();
-            TempShape.Position = new Vector2f().UseVentilloVector(objectToDraw.Position);
+            TempShape.Position = new Vector2f().UseVentilloVector(objectToDraw.Position); 
             TempShape.SetPointCount(4);
 
-            TempShape.SetPoint(0, new Vector2f().UseVentilloVector(minGlobal));
-            TempShape.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(maxGlobal.x, minGlobal.y)));
-            TempShape.SetPoint(2, new Vector2f().UseVentilloVector(maxGlobal));
-            TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minGlobal.x, maxGlobal.y)));
+            TempShape.SetPoint(0, new Vector2f().UseVentilloVector(min));
+            TempShape.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(max.x, min.y)));
+            TempShape.SetPoint(2, new Vector2f().UseVentilloVector(max));
+            TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(min.x, max.y)));
 
-            this.setDrawModes(TempShape, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
+            setDrawModes(TempShape, new Color(), new Color(209, 49, 17, 155));
             Engine.window.Draw(TempShape);
 
             for (var drawableIndex = 0; drawableIndex < objectToDraw.DrawObjects.Count; drawableIndex++)
             {
                 var drawable = objectToDraw.DrawObjects.ElementAt(drawableIndex);
 
-                var minObjGlobal = objectToDraw.ToGlobalCoords(drawable.MinMax.Min);
-                var maxObjGlobal = objectToDraw.ToGlobalCoords(drawable.MinMax.Max);
+                var minObj= drawable.MinMax.Min;
+                var maxObj = drawable.MinMax.Max;
 
                 ConvexShape TempShapeObj = new ConvexShape();
                 TempShapeObj.Position = new Vector2f().UseVentilloVector(objectToDraw.Position);
                 TempShapeObj.SetPointCount(4);
 
-                TempShapeObj.SetPoint(0, new Vector2f().UseVentilloVector(minObjGlobal));
-                TempShapeObj.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(maxObjGlobal.x, minObjGlobal.y)));
-                TempShapeObj.SetPoint(2, new Vector2f().UseVentilloVector(maxObjGlobal));
-                TempShapeObj.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minObjGlobal.x, maxObjGlobal.y)));
+                TempShapeObj.SetPoint(0, new Vector2f().UseVentilloVector(minObj));
+                TempShapeObj.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(maxObj.x, minObj.y)));
+                TempShapeObj.SetPoint(2, new Vector2f().UseVentilloVector(maxObj));
+                TempShapeObj.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(minObj.x, maxObj.y)));
 
-                this.setDrawModes(TempShapeObj, new Color(), new Color(Convert.ToByte(209), Convert.ToByte(49), Convert.ToByte(17), Convert.ToByte(115)));
+                setDrawModes(TempShapeObj, new Color(), new Color(102, 225, 0, 155));
                 Engine.window.Draw(TempShapeObj);
             }
         }

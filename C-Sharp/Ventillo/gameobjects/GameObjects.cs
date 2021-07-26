@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 
-using Ventillo;
+using Ventillo.System;
 using Ventillo.Utils;
+using Color = Ventillo.System.Color;
 
 namespace Ventillo.GameObjects
 {
@@ -131,16 +132,6 @@ namespace Ventillo.GameObjects
             }
         }
 
-        private void RotateAroundPoint(Vector point, double angle)
-        {
-            Position = Vector.rotateVectorAroundPoint(Position, point, angle);
-        }
-
-        private void TranslatePosition(Vector otherVector)
-        {
-            Position = Vector.translate(Position, otherVector);
-        }
-
         private void AssignTotalObjectBounds()
         {
             Vector Min = new Vector(double.MaxValue, double.MaxValue);
@@ -200,6 +191,7 @@ namespace Ventillo.GameObjects
         {
             ConvexShape TempShape = new ConvexShape();
             TempShape.Position = new Vector2f().UseVentilloVector(Position);
+            TempShape.Origin = TempShape.Position;
             TempShape.SetPointCount(4);
 
             TempShape.SetPoint(0, new Vector2f(-0.5f, 0.5f));
@@ -219,15 +211,15 @@ namespace Ventillo.GameObjects
                 ConvexShape TempShape = new ConvexShape();
                 TempShape.Position = new Vector2f().UseVentilloVector(Position);
 
-                uint index = 0;
+                uint pointIndex = 0;
                 TempShape.SetPointCount((uint)(drawable.DrawPoints.Count));
 
                 for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
                     var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
-                    TempShape.SetPoint(index, new Vector2f().UseVentilloVector(drawPoint));
-                    index++;
+                    TempShape.SetPoint(pointIndex, new Vector2f().UseVentilloVector(drawPoint));
+                    pointIndex++;
                 }
 
                 setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
@@ -262,7 +254,7 @@ namespace Ventillo.GameObjects
             SFMLtext.Position = new Vector2f().UseVentilloVector(position);
 
             // set the color
-            SFMLtext.FillColor = colour;
+            SFMLtext.FillColor = colour.GetSFMLColor();
 
             // set the text style
             SFMLtext.Style = Text.Styles.Regular;
@@ -282,6 +274,7 @@ namespace Ventillo.GameObjects
 
                     ConvexShape TempShape = new ConvexShape();
                     TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                    TempShape.Origin = TempShape.Position;
                     TempShape.SetPointCount(4);
 
                     TempShape.SetPoint(0, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y + 0.5f)));
@@ -316,9 +309,9 @@ namespace Ventillo.GameObjects
 
         protected void setDrawModes(Shape TempShape, Color StrokeStyle, Color FillStyle)
         {
-            TempShape.OutlineColor = StrokeStyle;
+            TempShape.OutlineColor = StrokeStyle.GetSFMLColor();
 
-            TempShape.FillColor = FillStyle;
+            TempShape.FillColor = FillStyle.GetSFMLColor();
         }
     }
 

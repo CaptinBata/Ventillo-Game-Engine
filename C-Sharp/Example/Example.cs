@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Ventillo;
-using Ventillo.Utils;
+using Ventillo.System;
 using Ventillo.Interfaces;
 
 using Example.GameObjects;
@@ -17,7 +17,11 @@ namespace Example.Game
 
         internal ExampleGame()
         {
+            Engine.SetWindowTitle("Example Game");
+
+            Engine.logger.Info("Creating Square Object");
             var square = new Square(new Vector(Engine.playableArea.Max.x / 2, Engine.playableArea.Max.y / 2));
+            Engine.logger.Info("Created Square Object", square);
             gameObjects.Add(square);
         }
 

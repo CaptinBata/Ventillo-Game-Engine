@@ -10,7 +10,7 @@ using SFML.System;
 using SFML.Graphics;
 
 using Ventillo.Utils;
-using Ventillo.GameObjects;
+using Ventillo.System;
 using Ventillo.Interfaces;
 using Ventillo.Debug;
 
@@ -47,9 +47,8 @@ namespace Ventillo
         {
             this.FPSLimit = FPSLimit;
 
-            this.SetupEngine();
-            this.SetupEvents();
-            this.debugObject = new DebugObject(new Vector(0, 0), playableArea);
+            SetupEngine();
+            SetupEvents();
         }
 
         public void SetGame(IGame game)
@@ -60,7 +59,7 @@ namespace Ventillo
 
         public void Start()
         {
-            logger.Info("Engine started", new { });
+            logger.Info("Engine started");
 
             this.StartInternalCoRoutine(this.CheckForNextScene());
             this.StartInternalCoRoutine(this.CheckForNullObjects());
@@ -259,7 +258,7 @@ namespace Ventillo
             };
         }
 
-        public void SetWindowTitle(string title)
+        public static void SetWindowTitle(string title)
         {
             window.SetTitle(title);
         }
@@ -276,6 +275,8 @@ namespace Ventillo
                 new Vector(GetWindowWidth() * 0.15, GetWindowHeight() * 0.10),
                 new Vector(GetWindowWidth() * 0.85, GetWindowHeight() * 0.9)
             );
+
+            this.debugObject = new DebugObject(new Vector(0, 0), playableArea);
         }
 
         void ClearScreen()

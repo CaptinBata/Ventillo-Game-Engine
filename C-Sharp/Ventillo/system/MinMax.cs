@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ventillo.Utils;
+using Ventillo.System;
 
-namespace Ventillo.GameObjects
+namespace Ventillo.System
 {
     public class MinMax
     {

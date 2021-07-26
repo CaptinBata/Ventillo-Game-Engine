@@ -17,35 +17,35 @@ namespace Ventillo.Debug
             this.level = level;
         }
 
-        public void Debug(string message, object data)
+        public void Debug(string message, object data = null)
         {
             if (this.level <= LoggerLevels.DEBUG)
             {
-                Console.WriteLine($"DEBUG: {message} {data}");
+                Console.WriteLine($"DEBUG: {message}, {data}");
             }
         }
 
-        public void Info(string message, object data)
+        public void Info(string message, object data = null)
         {
             if (this.level <= LoggerLevels.INFO)
             {
-                Console.WriteLine($"INFO: {message} {data}");
+                Console.WriteLine($"INFO: {message}, {data}");
             }
         }
 
-        public void Warn(string message, object data)
+        public void Warn(string message, object data = null)
         {
             if (this.level <= LoggerLevels.WARN)
             {
-                Console.WriteLine($"WARN: {message} {data}");
+                Console.WriteLine($"WARN: {message}, {data}");
             }
         }
 
-        public void Error(string message, object data)
+        public void Error(string message, Exception error = null, object data = null)
         {
             if (this.level <= LoggerLevels.ERROR)
             {
-                Console.WriteLine($"ERROR: {message} {data}");
+                Console.WriteLine($"ERROR: {message}, {error} - {data}");
             }
         }
     }

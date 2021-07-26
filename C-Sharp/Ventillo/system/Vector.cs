@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ventillo.Utils
+namespace Ventillo.System
 {
     public class Vector
     {
@@ -17,7 +17,7 @@ namespace Ventillo.Utils
             this.y = y;
         }
 
-        public static Vector translate(Vector vector_1, Vector vector_2)
+        public static Vector Translate(Vector vector_1, Vector vector_2)
         {
             return new Vector(
                 vector_1.x + vector_2.x,
@@ -25,7 +25,13 @@ namespace Ventillo.Utils
             );
         }
 
-        public static Vector rotateVectorAroundPoint(Vector vector, Vector point, double angle)
+        public void Translate(Vector translateVector)
+        {
+            x += translateVector.x;
+            y += translateVector.y;
+        }
+
+        public static Vector RotateVectorAroundPoint(Vector vector, Vector point, double angle)
         {
             double radians = angle * (Math.PI / 180.0);
 
