@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: pack-artifacts
-        path: C-Sharp/Ventillo/bin/*
+        path: Ventillo.Engine.${VERSION}.nupkg
   Push Package:
     needs: Pack Package
     runs-on: ubuntu-latest
@@ -61,6 +61,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Download pack artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: pack-artifacts
     - name: Push
       run: dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
       env:
