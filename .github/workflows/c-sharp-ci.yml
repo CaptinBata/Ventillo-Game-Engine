@@ -18,7 +18,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-artifacts
-        path: Ventillo/bin/*
+        path: C-Sharp/Ventillo/bin/*
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
