@@ -1,0 +1,23 @@
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: artifact build outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: Ventillo/bin/*
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Test
+      run: dotnet test --configuration Release --no-build
