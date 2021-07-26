@@ -14,7 +14,7 @@ jobs:
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
         git branch --remote --contains | grep origin/main
   Set_Version:
-    needs: Verify Commit
+    needs: Verify_Commit
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -23,7 +23,7 @@ jobs:
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
   Build:
-    needs: Set Version
+    needs: Set_Version
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -55,7 +55,7 @@ jobs:
         name: pack-artifacts
         path: Ventillo.Engine.${VERSION}.nupkg
   Push_Package:
-    needs: Pack Package
+    needs: Pack_Package
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
