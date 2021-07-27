@@ -47,7 +47,7 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Restore NuGet Package
-      run: dotnet restore
+      run: dotnet restore C-Sharp/C-Sharp.sln
     - name: Pack
       run: dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: artifact pack outputs
