@@ -36,7 +36,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export $VERSION
+        export VERSION=$VERSION
         echo "::set-env name=VERSION::$VERSION"
     - name: List Out Dir
       run: ls -a
@@ -57,7 +57,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export $VERSION
+        export VERSION=$VERSION
         echo "::set-env name=VERSION::$VERSION"
     - name: List Out Dir
       run: ls -a
@@ -78,7 +78,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export $VERSION
+        export VERSION=$VERSION
         echo "::set-env name=VERSION::$VERSION"
     - name: List Out Dir
       run: ls -a
@@ -108,7 +108,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export $VERSION
+        export VERSION=$VERSION
         echo "::set-env name=VERSION::$VERSION"
     - name: List Out Dir
       run: ls -a
