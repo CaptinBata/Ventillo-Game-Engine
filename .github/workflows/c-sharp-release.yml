@@ -9,6 +9,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Set VERSION variable from tag
       run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
   Build:
@@ -18,6 +20,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Build
       run: dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Test:
@@ -27,6 +31,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Test
       run: dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build
   Pack_Package:
@@ -36,6 +42,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Pack
       run: dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: artifact pack outputs
@@ -50,6 +58,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Download pack artifacts
       uses: actions/download-artifact@v2
       with:
