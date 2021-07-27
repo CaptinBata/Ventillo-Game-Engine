@@ -36,7 +36,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        echo $VERSION
+        echo "VERSION=$VERSION" >> GITHUB_ENV
     - name: List Out Dir
       run: ls -a
     - name: Build
@@ -56,7 +56,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        echo $VERSION
+        echo "VERSION=$VERSION" >> GITHUB_ENV
     - name: List Out Dir
       run: ls -a
     - name: Test
@@ -76,7 +76,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        echo $VERSION
+        echo "VERSION=$VERSION" >> GITHUB_ENV
     - name: List Out Dir
       run: ls -a
     - name: Check VERSION variable from tag
@@ -105,7 +105,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        echo $VERSION
+        echo "VERSION=$VERSION" >> GITHUB_ENV
     - name: List Out Dir
       run: ls -a
     - name: Download pack artifacts
