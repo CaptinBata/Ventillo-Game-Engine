@@ -40,7 +40,7 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Build
-      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Test
-      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release
   Pack_Package:
     needs: Test
     runs-on: ubuntu-latest
