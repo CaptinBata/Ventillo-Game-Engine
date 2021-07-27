@@ -107,5 +107,7 @@ jobs:
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
         dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+        dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://nuget.pkg.github.com/acraven/index.json --api-key ${GITHUB_TOKEN}
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
