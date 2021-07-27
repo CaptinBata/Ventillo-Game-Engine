@@ -28,20 +28,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Download Version
       uses: actions/download-artifact@v2
       with:
         name: version
-    - name: Parse Version
+    - name: Build
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export VERSION=$VERSION
-        echo "::set-env name=VERSION::$VERSION"
-    - name: List Out Dir
-      run: ls -a
-    - name: Build
-      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release
+        dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -49,20 +46,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Download Version
       uses: actions/download-artifact@v2
       with:
         name: version
-    - name: Parse Version
+    - name: Test
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export VERSION=$VERSION
-        echo "::set-env name=VERSION::$VERSION"
-    - name: List Out Dir
-      run: ls -a
-    - name: Test
-      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release
+        dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Pack_Package:
     needs: Test
     runs-on: ubuntu-latest
@@ -70,24 +64,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Download Version
       uses: actions/download-artifact@v2
       with:
         name: version
-    - name: Parse Version
-      run: |
-        FILE=$(cat "version.txt")
-        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export VERSION=$VERSION
-        echo "::set-env name=VERSION::$VERSION"
-    - name: List Out Dir
-      run: ls -a
     - name: Check VERSION variable from tag
       run: echo "$VERSION"
     - name: Restore NuGet Package
       run: dotnet restore C-Sharp/C-Sharp.sln
     - name: Pack
-      run: dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: artifact pack outputs
       uses: actions/upload-artifact@v2
       with:
@@ -100,23 +91,20 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Download Version
       uses: actions/download-artifact@v2
       with:
         name: version
-    - name: Parse Version
-      run: |
-        FILE=$(cat "version.txt")
-        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
-        export VERSION=$VERSION
-        echo "::set-env name=VERSION::$VERSION"
-    - name: List Out Dir
-      run: ls -a
     - name: Download pack artifacts
       uses: actions/download-artifact@v2
       with:
         name: pack-artifacts
     - name: Push
-      run: dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
