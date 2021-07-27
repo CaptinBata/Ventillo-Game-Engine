@@ -28,13 +28,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Download Version
+    - name: Download Versionecho $FIL
       uses: actions/download-artifact@v2
       with:
         name: version
     - name: Parse Version
       run: |
-        VERSION=`cat version.txt`
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
         echo $VERSION
     - name: List Out Dir
       run: ls -a
