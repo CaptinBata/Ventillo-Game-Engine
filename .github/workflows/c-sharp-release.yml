@@ -12,9 +12,15 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Set VERSION variable from tag
-      run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+      run: echo "VERSION=$(git describe --tags --abbrev=0)" > version.txt
     - name: Check VERSION variable from tag
       run: echo "$VERSION"
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v2
+      with:
+        name: version
+        path: version.txt
+        retention-days: 5
   Build:
     needs: Set_Version
     runs-on: ubuntu-latest
@@ -22,6 +28,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
+    - name: Parse Version
+      run: |
+        VERSION=`cat version.txt`
+        echo $VERSION
     - name: List Out Dir
       run: ls -a
     - name: Build
