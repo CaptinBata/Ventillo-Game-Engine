@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
+    - "[0-9]+.[0-9]+.[0-9]+*"
 jobs:
   Set_Version:
     runs-on: ubuntu-latest
@@ -9,8 +9,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
     - name: Set VERSION variable from tag
-      run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+      run: echo "VERSION=$(git describe --tags --abbrev=0)" > version.txt
+    - name: Check VERSION variable from tag
+      run: echo "$VERSION"
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v2
+      with:
+        name: version
+        path: version.txt
+        retention-days: 5
   Build:
     needs: Set_Version
     runs-on: ubuntu-latest
@@ -18,8 +28,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
     - name: Build
-      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -27,8 +46,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
     - name: Test
-      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Pack_Package:
     needs: Test
     runs-on: ubuntu-latest
@@ -36,13 +64,27 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
+    - name: Check VERSION variable from tag
+      run: echo "$VERSION"
+    - name: Restore NuGet Package
+      run: dotnet restore C-Sharp/C-Sharp.sln
     - name: Pack
-      run: dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+        dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: artifact pack outputs
       uses: actions/upload-artifact@v2
       with:
         name: pack-artifacts
-        path: Ventillo.Engine.${VERSION}.nupkg
+        path: Ventillo.Engine.*.nupkg
   Push_Package:
     needs: Pack_Package
     runs-on: ubuntu-latest
@@ -50,11 +92,24 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: List Out Dir
+      run: ls -a
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
     - name: Download pack artifacts
       uses: actions/download-artifact@v2
       with:
         name: pack-artifacts
     - name: Push
-      run: dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+        dotnet nuget add source --username CaptinBata --password ${GITHUB_TOKEN} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CaptinBata/index.json"
+        dotnet nuget push "Ventillo.Engine.${VERSION}.nupkg"  --api-key ${VENTILLO_PAT} --source "github"
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VENTILLO_PAT: ${{ secrets.VENTILLO_PAT }}
