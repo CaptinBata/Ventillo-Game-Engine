@@ -13,6 +13,8 @@ jobs:
       run: ls -a
     - name: Set VERSION variable from tag
       run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+    - name: Check VERSION variable from tag
+      run: echo "$VERSION"
   Build:
     needs: Set_Version
     runs-on: ubuntu-latest
