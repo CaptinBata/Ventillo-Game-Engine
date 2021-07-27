@@ -39,11 +39,6 @@ jobs:
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
         dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
-    - name: artifact build outputs
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifacts
-        path: C-Sharp/Ventillo/bin/*
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -87,6 +82,7 @@ jobs:
       run: |
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
         dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: artifact pack outputs
       uses: actions/upload-artifact@v2
