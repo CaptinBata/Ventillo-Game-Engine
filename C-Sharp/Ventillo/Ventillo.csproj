@@ -7,6 +7,8 @@
     <Version>0.0.1</Version>
     <Authors>CaptinBata</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageDescription>Ventillo Game Engine</PackageDescription>
+    <RepositoryUrl>https://github.com/CaptinBata/Ventillo-Game-Engine</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
