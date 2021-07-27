@@ -28,7 +28,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Download Versionecho $FIL
+    - name: Download Version
       uses: actions/download-artifact@v2
       with:
         name: version
@@ -40,7 +40,7 @@ jobs:
     - name: List Out Dir
       run: ls -a
     - name: Build
-      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release
+      run: dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -48,10 +48,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
+    - name: Parse Version
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        echo $VERSION
     - name: List Out Dir
       run: ls -a
     - name: Test
-      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release
+      run: dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
   Pack_Package:
     needs: Test
     runs-on: ubuntu-latest
@@ -59,6 +68,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
+    - name: Parse Version
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        echo $VERSION
     - name: List Out Dir
       run: ls -a
     - name: Check VERSION variable from tag
@@ -79,6 +97,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: version
+    - name: Parse Version
+      run: |
+        FILE=$(cat "version.txt")
+        VERSION=$(echo "$FILE" | cut -d "=" -f 2)
+        echo $VERSION
     - name: List Out Dir
       run: ls -a
     - name: Download pack artifacts
