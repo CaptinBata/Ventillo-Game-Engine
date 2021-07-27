@@ -39,6 +39,11 @@ jobs:
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
         dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+    - name: artifact build outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: C-Sharp/Ventillo/bin/*
   Test:
     needs: Build
     runs-on: ubuntu-latest
@@ -74,6 +79,10 @@ jobs:
       run: echo "$VERSION"
     - name: Restore NuGet Package
       run: dotnet restore C-Sharp/C-Sharp.sln
+    - name: Download Version
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
     - name: Pack
       run: |
         FILE=$(cat "version.txt")
