@@ -107,7 +107,9 @@ jobs:
         FILE=$(cat "version.txt")
         VERSION=$(echo "$FILE" | cut -d "=" -f 2)
         dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
-        dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://nuget.pkg.github.com/CaptinBata/index.json --api-key ${GITHUB_TOKEN}
+        dotnet nuget add source --username CaptinBata --password ${GITHUB_TOKEN} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CaptinBata/index.json"
+        dotnet nuget push "Ventillo.Engine.${VERSION}.nupkg"  --api-key ${VENTILLO_PAT} --source "github"
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VENTILLO_PAT: ${{ secrets.VENTILLO_PAT }}
