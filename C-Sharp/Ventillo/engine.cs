@@ -37,6 +37,7 @@ namespace Ventillo
         static public MinMax playableArea;
         static public List<IGame> scenes = new List<IGame>();
         static public Logger logger;
+        static internal string contentFilePath = "contentFiles/any/any";
         bool debug = false;
         bool runGame = false;
         DebugObject debugObject;

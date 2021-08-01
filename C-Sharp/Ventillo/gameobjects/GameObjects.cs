@@ -241,7 +241,7 @@ namespace Ventillo.GameObjects
 
         private Font LoadDebugText()
         {
-            return new Font("contentFiles/debug/fonts/GIL_____.ttf");
+            return new Font($"{Engine.contentFilePath}/debug/fonts/GIL_____.ttf");
         }
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
