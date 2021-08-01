@@ -333,6 +333,11 @@ namespace Ventillo.GameObjects
 
                     CircleShape TempShape = new CircleShape((float)(drawPoint.x));
                     TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                    TempShape.Origin = new Vector2f().UseVentilloVector(
+                        new Vector(
+                            drawPoint.x / 2,
+                            drawPoint.y / 2
+                        ));
 
                     setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
