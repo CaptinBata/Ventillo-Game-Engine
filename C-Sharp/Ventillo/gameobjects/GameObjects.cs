@@ -335,8 +335,8 @@ namespace Ventillo.GameObjects
                     TempShape.Position = new Vector2f().UseVentilloVector(Position);
                     TempShape.Origin = new Vector2f().UseVentilloVector(
                         new Vector(
-                            drawPoint.x / 2,
-                            drawPoint.y / 2
+                            drawPoint.x,
+                            drawPoint.y
                         ));
 
                     setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
