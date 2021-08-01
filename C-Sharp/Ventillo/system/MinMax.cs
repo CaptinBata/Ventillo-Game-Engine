@@ -23,7 +23,7 @@ namespace Ventillo.System
             this.Max = Max;
         }
 
-        bool pointIntersects(Vector point)
+        public bool PointIntersects(Vector point)
         {
             if (point.x > this.Min.x && point.y > this.Min.y &&
                 point.x < this.Max.x && point.y < this.Max.y)

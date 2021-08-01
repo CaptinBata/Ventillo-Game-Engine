@@ -202,6 +202,11 @@ namespace Ventillo.GameObjects
             Engine.window.Draw(TempShape);
         }
 
+        protected void DrawByLine()
+        {
+            DrawByLine(DrawObjects);
+        }
+
         protected void DrawByLine(List<DrawObject> Drawobjects)
         {
             for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
@@ -246,9 +251,9 @@ namespace Ventillo.GameObjects
             {
                 return LoadFont($"{Engine.contentFilePath}/debug/fonts/GIL_____.ttf");
             }
-            catch (Exception error)
+            catch (Exception)
             {
-                Engine.logger.Error("Failed to load debug font file. Attempting second method", error, new { message = error.Message, stackTrace = error.StackTrace, source = error.Source, targetSite = error.TargetSite });
+                Engine.logger.Warn("Failed to load debug font file. Attempting second method");
             };
 
             try
@@ -280,6 +285,11 @@ namespace Ventillo.GameObjects
             Engine.window.Draw(SFMLtext);
         }
 
+        protected void DrawByPixel()
+        {
+            DrawByPixel(DrawObjects);
+        }
+
         protected void DrawByPixel(List<DrawObject> Drawobjects)
         {
             for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
@@ -304,6 +314,11 @@ namespace Ventillo.GameObjects
                     Engine.window.Draw(TempShape);
                 }
             }
+        }
+
+        protected void DrawByCircle()
+        {
+            DrawByCircle(DrawObjects);
         }
 
         protected void DrawByCircle(List<DrawObject> DrawObjects)
