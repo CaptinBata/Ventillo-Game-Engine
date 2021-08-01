@@ -25,6 +25,7 @@
       <CopyToOutput>true</CopyToOutput>
       <BuildAction>Content</BuildAction>
       <copyToOutput>true</copyToOutput>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
