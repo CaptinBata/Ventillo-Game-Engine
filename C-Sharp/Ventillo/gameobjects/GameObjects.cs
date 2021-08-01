@@ -258,7 +258,7 @@ namespace Ventillo.GameObjects
 
             try
             {
-                return LoadFont("/debug/fonts/GIL_____.ttf");
+                return LoadFont("debug/fonts/GIL_____.ttf");
             }
             catch (Exception error)
             {
