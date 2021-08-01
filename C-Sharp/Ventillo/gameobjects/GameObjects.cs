@@ -235,13 +235,31 @@ namespace Ventillo.GameObjects
             }
             catch (Exception error)
             {
+                Engine.logger.Error($"Failed to load font {fontPath}", error, new { message = error.Message, stackTrace = error.StackTrace, source = error.Source, targetSite = error.TargetSite });
                 throw new Exception($"Failed to load font ${fontPath}. Exception: {error}");
             }
         }
 
         private Font LoadDebugText()
         {
-            return new Font($"{Engine.contentFilePath}/debug/fonts/GIL_____.ttf");
+            try
+            {
+                return LoadFont($"{Engine.contentFilePath}/debug/fonts/GIL_____.ttf");
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to load debug font file. Attempting second method", error, new { message = error.Message, stackTrace = error.StackTrace, source = error.Source, targetSite = error.TargetSite });
+            };
+
+            try
+            {
+                return LoadFont("/debug/fonts/GIL_____.ttf");
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Second attempt failed. Failed to load font. Throwing", error);
+                throw;
+            };
         }
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
