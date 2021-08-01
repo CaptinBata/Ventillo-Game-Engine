@@ -327,7 +327,7 @@ namespace Ventillo.GameObjects
             {
                 var drawable = DrawObjects.ElementAt(drawableIndex);
 
-                for (var drawPointIndex = 0; drawableIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
                     var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
