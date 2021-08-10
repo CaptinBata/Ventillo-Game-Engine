@@ -12,12 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFML.Net" Version="2.5.0">
-      <GeneratePathProperty>false</GeneratePathProperty>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="contentFiles/**/*.*">
       <Pack>true</Pack>
       <PackagePath>contentFiles;content</PackagePath>
@@ -33,6 +27,12 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SFML.Graphics" Version="2.5.0" />
+    <PackageReference Include="SFML.System" Version="2.5.0" />
+    <PackageReference Include="SFML.Window" Version="2.5.0" />
   </ItemGroup>
 
 </Project>

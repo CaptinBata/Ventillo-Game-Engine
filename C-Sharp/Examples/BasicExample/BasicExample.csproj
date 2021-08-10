@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ventillo\Ventillo.csproj" />
+    <ProjectReference Include="..\..\Ventillo\Ventillo.csproj" />
   </ItemGroup>
 
 </Project>
