@@ -1,3 +1,4 @@
+name: "[C-Sharp] - Default"
 on:
   push:
   pull_request:

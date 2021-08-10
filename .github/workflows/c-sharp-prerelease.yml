@@ -1,3 +1,4 @@
+name: "[C-Sharp] - Pre-Release"
 on:
   push:
     tags:
