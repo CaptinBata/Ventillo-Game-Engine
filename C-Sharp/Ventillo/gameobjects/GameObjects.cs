@@ -74,86 +74,110 @@ namespace Ventillo.GameObjects
 
         private bool DetectAABBCollision(GameObject other)
         {
-            var collisions = (MinX: false, MaxX: false, MinY: false, MaxY: false);
+            try
+            {
+                var collisions = (MinX: false, MaxX: false, MinY: false, MaxY: false);
 
-            Vector OtherMinGlobal = other.ToGlobalCoords(other.GetMinMax().Min);
-            Vector OtherMaxGlobal = other.ToGlobalCoords(other.GetMinMax().Max);
+                Vector OtherMinGlobal = other.ToGlobalCoords(other.GetMinMax().Min);
+                Vector OtherMaxGlobal = other.ToGlobalCoords(other.GetMinMax().Max);
 
-            Vector ThisMinGlobal = ToGlobalCoords(GetMinMax().Min);
-            Vector ThisMaxGlobal = ToGlobalCoords(GetMinMax().Max);
+                Vector ThisMinGlobal = ToGlobalCoords(GetMinMax().Min);
+                Vector ThisMaxGlobal = ToGlobalCoords(GetMinMax().Max);
 
-            if (OtherMinGlobal.x > ThisMinGlobal.x && OtherMinGlobal.x < ThisMaxGlobal.x)
-                collisions.MinX = true;
-            if (OtherMaxGlobal.x > ThisMinGlobal.x && OtherMaxGlobal.x < ThisMaxGlobal.x)
-                collisions.MaxX = true;
+                if (OtherMinGlobal.x > ThisMinGlobal.x && OtherMinGlobal.x < ThisMaxGlobal.x)
+                    collisions.MinX = true;
+                if (OtherMaxGlobal.x > ThisMinGlobal.x && OtherMaxGlobal.x < ThisMaxGlobal.x)
+                    collisions.MaxX = true;
 
 
-            if (OtherMinGlobal.y > ThisMinGlobal.y && OtherMinGlobal.y < ThisMaxGlobal.y)
-                collisions.MinY = true;
-            if (OtherMaxGlobal.y > ThisMinGlobal.y && OtherMaxGlobal.y < ThisMaxGlobal.y)
-                collisions.MaxY = true;
+                if (OtherMinGlobal.y > ThisMinGlobal.y && OtherMinGlobal.y < ThisMaxGlobal.y)
+                    collisions.MinY = true;
+                if (OtherMaxGlobal.y > ThisMinGlobal.y && OtherMaxGlobal.y < ThisMaxGlobal.y)
+                    collisions.MaxY = true;
 
-            return (collisions.MinX || collisions.MaxX) && (collisions.MinY || collisions.MaxY); //If horizontal point and vertical point overlapping, doesn't matter which ones or if multiple of either
+                return (collisions.MinX || collisions.MaxX) && (collisions.MinY || collisions.MaxY); //If horizontal point and vertical point overlapping, doesn't matter which ones or if multiple of either
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to detect AABBCollision", error, other);
+                throw;
+            }
         }
 
         private void AssignIndividualObjectBounds()
         {
-            for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
+            try
             {
-                var drawObject = DrawObjects.ElementAt(drawObjectIndex);
-
-                Vector Min = new Vector(double.MaxValue, double.MaxValue);
-                Vector Max = new Vector(double.MinValue, double.MinValue);
-
-                for (var pointIndex = 0; pointIndex < drawObject.DrawPoints.Count; pointIndex++)
+                for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
                 {
-                    var point = drawObject.DrawPoints.ElementAt(pointIndex);
+                    var drawObject = DrawObjects.ElementAt(drawObjectIndex);
 
-                    if (point.x < Min.x)
-                        Min = new Vector(point.x, Min.y);
-                    if (point.y < Min.y)
-                        Min = new Vector(Min.x, point.y);
+                    Vector Min = new Vector(double.MaxValue, double.MaxValue);
+                    Vector Max = new Vector(double.MinValue, double.MinValue);
+
+                    for (var pointIndex = 0; pointIndex < drawObject.DrawPoints.Count; pointIndex++)
+                    {
+                        var point = drawObject.DrawPoints.ElementAt(pointIndex);
+
+                        if (point.x < Min.x)
+                            Min = new Vector(point.x, Min.y);
+                        if (point.y < Min.y)
+                            Min = new Vector(Min.x, point.y);
 
 
-                    if (point.x > Max.x)
-                        Max = new Vector(point.x, Max.y);
-                    if (point.y > Max.y)
-                        Max = new Vector(Max.x, point.y);
-                };
+                        if (point.x > Max.x)
+                            Max = new Vector(point.x, Max.y);
+                        if (point.y > Max.y)
+                            Max = new Vector(Max.x, point.y);
+                    };
 
-                MinMax MinMax = new MinMax(Min, Max);
+                    MinMax MinMax = new MinMax(Min, Max);
 
-                var index = DrawObjects.IndexOf(drawObject);
-                var OldMinMax = DrawObjects.ElementAt(index);
-                var NewMinMax = OldMinMax;
+                    var index = DrawObjects.IndexOf(drawObject);
+                    var OldMinMax = DrawObjects.ElementAt(index);
+                    var NewMinMax = OldMinMax;
 
-                NewMinMax.MinMax = MinMax;
-                DrawObjects[index] = NewMinMax; //Assign each individual part of a drawObject's minMax
+                    NewMinMax.MinMax = MinMax;
+                    DrawObjects[index] = NewMinMax; //Assign each individual part of a drawObject's minMax
+                }
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to assign individual object bounds", error);
+                throw;
             }
         }
 
         private void AssignTotalObjectBounds()
         {
-            Vector Min = new Vector(double.MaxValue, double.MaxValue);
-            Vector Max = new Vector(double.MinValue, double.MinValue);
-
-            for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
+            try
             {
-                var drawObject = DrawObjects.ElementAt(drawObjectIndex);
+                Vector Min = new Vector(double.MaxValue, double.MaxValue);
+                Vector Max = new Vector(double.MinValue, double.MinValue);
 
-                if (drawObject.MinMax.Max.x > Max.x)
-                    Max = new Vector(drawObject.MinMax.Max.x, Max.y);
-                if (drawObject.MinMax.Max.y > Max.y)
-                    Max = new Vector(Max.x, drawObject.MinMax.Max.y);
-                if (drawObject.MinMax.Min.x < Min.x)
-                    Min = new Vector(drawObject.MinMax.Min.x, Min.y);
-                if (drawObject.MinMax.Min.y < Min.y)
-                    Min = new Vector(Min.x, drawObject.MinMax.Min.y);
+                for (var drawObjectIndex = 0; drawObjectIndex < DrawObjects.Count; drawObjectIndex++)
+                {
+                    var drawObject = DrawObjects.ElementAt(drawObjectIndex);
+
+                    if (drawObject.MinMax.Max.x > Max.x)
+                        Max = new Vector(drawObject.MinMax.Max.x, Max.y);
+                    if (drawObject.MinMax.Max.y > Max.y)
+                        Max = new Vector(Max.x, drawObject.MinMax.Max.y);
+                    if (drawObject.MinMax.Min.x < Min.x)
+                        Min = new Vector(drawObject.MinMax.Min.x, Min.y);
+                    if (drawObject.MinMax.Min.y < Min.y)
+                        Min = new Vector(Min.x, drawObject.MinMax.Min.y);
+                }
+
+                MinMax MinMax = new MinMax(Min, Max);
+
+                this.MinMax = MinMax; //Assign overall box of the entire object
             }
-
-            MinMax MinMax = new MinMax(Min, Max);
-
-            this.MinMax = MinMax; //Assign overall box of the entire object
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to assign total object bounds", error);
+                throw;
+            }
         }
 
         private void GetObjectBounds() //Used to find the AABB (Axis-Aligned Bounding Box). Basically the basic box around the object to be used as primitive hit detection
@@ -190,40 +214,56 @@ namespace Ventillo.GameObjects
         protected void DrawAPixel(Vector Position)
         {
             ConvexShape TempShape = new ConvexShape();
-            TempShape.Position = new Vector2f().UseVentilloVector(Position);
-            TempShape.Origin = TempShape.Position;
-            TempShape.SetPointCount(4);
+            try
+            {
+                TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                TempShape.Origin = TempShape.Position;
+                TempShape.SetPointCount(4);
 
-            TempShape.SetPoint(0, new Vector2f(-0.5f, 0.5f));
-            TempShape.SetPoint(1, new Vector2f(0.5f, 0.5f));
-            TempShape.SetPoint(2, new Vector2f(0.5f, -0.5f));
-            TempShape.SetPoint(3, new Vector2f(-0.5f, -0.5f));
+                TempShape.SetPoint(0, new Vector2f(-0.5f, 0.5f));
+                TempShape.SetPoint(1, new Vector2f(0.5f, 0.5f));
+                TempShape.SetPoint(2, new Vector2f(0.5f, -0.5f));
+                TempShape.SetPoint(3, new Vector2f(-0.5f, -0.5f));
 
-            Engine.window.Draw(TempShape);
+                Engine.window.Draw(TempShape);
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to draw a pixel", error, TempShape);
+                throw;
+            }
         }
 
         protected void DrawByLine(List<DrawObject> Drawobjects)
         {
-            for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
+            try
             {
-                var drawable = Drawobjects.ElementAt(drawableIndex);
-
-                ConvexShape TempShape = new ConvexShape();
-                TempShape.Position = new Vector2f().UseVentilloVector(Position);
-
-                uint pointIndex = 0;
-                TempShape.SetPointCount((uint)(drawable.DrawPoints.Count));
-
-                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
                 {
-                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+                    var drawable = Drawobjects.ElementAt(drawableIndex);
 
-                    TempShape.SetPoint(pointIndex, new Vector2f().UseVentilloVector(drawPoint));
-                    pointIndex++;
+                    ConvexShape TempShape = new ConvexShape();
+                    TempShape.Position = new Vector2f().UseVentilloVector(Position);
+
+                    uint pointIndex = 0;
+                    TempShape.SetPointCount((uint)(drawable.DrawPoints.Count));
+
+                    for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                    {
+                        var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+
+                        TempShape.SetPoint(pointIndex, new Vector2f().UseVentilloVector(drawPoint));
+                        pointIndex++;
+                    }
+
+                    setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                    Engine.window.Draw(TempShape);
                 }
-
-                setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
-                Engine.window.Draw(TempShape);
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to draw by line", error);
+                throw;
             }
         }
 
