@@ -13,7 +13,7 @@ namespace Ventillo.System
         SFML.Graphics.Color sfmlColor;
 
         public Color() { }
-        public Color(int red, int green, int blue, int alpha)
+        public Color(int red, int green, int blue, int alpha = 255)
         {
             sfmlColor = new SFML.Graphics.Color(Convert.ToByte(red), Convert.ToByte(green), Convert.ToByte(blue), Convert.ToByte(alpha));
         }

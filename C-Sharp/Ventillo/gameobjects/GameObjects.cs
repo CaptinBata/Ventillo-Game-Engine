@@ -234,6 +234,11 @@ namespace Ventillo.GameObjects
             }
         }
 
+        protected void DrawByLine()
+        {
+            DrawByLine(DrawObjects);
+        }
+
         protected void DrawByLine(List<DrawObject> Drawobjects)
         {
             try
@@ -275,13 +280,31 @@ namespace Ventillo.GameObjects
             }
             catch (Exception error)
             {
+                Engine.logger.Error($"Failed to load font {fontPath}", error, new { message = error.Message, stackTrace = error.StackTrace, source = error.Source, targetSite = error.TargetSite });
                 throw new Exception($"Failed to load font ${fontPath}. Exception: {error}");
             }
         }
 
         private Font LoadDebugText()
         {
-            return new Font("debug/fonts/GIL_____.ttf");
+            try
+            {
+                return LoadFont($"{Engine.contentFilePath}/debug/fonts/GIL_____.ttf");
+            }
+            catch (Exception)
+            {
+                Engine.logger.Warn("Failed to load debug font file. Attempting second method");
+            };
+
+            try
+            {
+                return LoadFont("debug/fonts/GIL_____.ttf");
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Second attempt failed. Failed to load font. Throwing", error);
+                throw;
+            };
         }
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
@@ -300,6 +323,11 @@ namespace Ventillo.GameObjects
             SFMLtext.Style = Text.Styles.Regular;
 
             Engine.window.Draw(SFMLtext);
+        }
+
+        protected void DrawByPixel()
+        {
+            DrawByPixel(DrawObjects);
         }
 
         protected void DrawByPixel(List<DrawObject> Drawobjects)
@@ -328,18 +356,28 @@ namespace Ventillo.GameObjects
             }
         }
 
+        protected void DrawByCircle()
+        {
+            DrawByCircle(DrawObjects);
+        }
+
         protected void DrawByCircle(List<DrawObject> DrawObjects)
         {
             for (var drawableIndex = 0; drawableIndex < DrawObjects.Count; drawableIndex++)
             {
                 var drawable = DrawObjects.ElementAt(drawableIndex);
 
-                for (var drawPointIndex = 0; drawableIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
                 {
                     var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
                     CircleShape TempShape = new CircleShape((float)(drawPoint.x));
                     TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                    TempShape.Origin = new Vector2f().UseVentilloVector(
+                        new Vector(
+                            drawPoint.x,
+                            drawPoint.y
+                        ));
 
                     setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
                     Engine.window.Draw(TempShape);
