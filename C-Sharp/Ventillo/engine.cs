@@ -95,7 +95,7 @@ namespace Ventillo
             coroutines.Add(new CoRoutine("Engine", coRoutine));
         }
 
-        void StartCoRoutine(IEnumerator coRoutine)
+        public static void StartCoRoutine(IEnumerator coRoutine)
         {
             coroutines.Add(new CoRoutine("Game", coRoutine));
         }
