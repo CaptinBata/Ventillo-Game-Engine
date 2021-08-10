@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using SFML.Graphics;
 using SFML.System;
-
 using Ventillo.System;
 using Ventillo.Utils;
 using Color = Ventillo.System.Color;
@@ -309,20 +308,28 @@ namespace Ventillo.GameObjects
 
         protected void DrawByText(string text, Vector position, Color colour, uint fontSize = 14)
         {
-            if (font == null)
-                font = LoadDebugText();
+            try
+            {
+                if (font == null)
+                    font = LoadDebugText();
 
-            Text SFMLtext = new Text(text, font, fontSize);
+                Text SFMLtext = new Text(text, font, fontSize);
 
-            SFMLtext.Position = new Vector2f().UseVentilloVector(position);
+                SFMLtext.Position = new Vector2f().UseVentilloVector(position);
 
-            // set the color
-            SFMLtext.FillColor = colour.GetSFMLColor();
+                // set the color
+                SFMLtext.FillColor = colour.GetSFMLColor();
 
-            // set the text style
-            SFMLtext.Style = Text.Styles.Regular;
+                // set the text style
+                SFMLtext.Style = Text.Styles.Regular;
 
-            Engine.window.Draw(SFMLtext);
+                Engine.window.Draw(SFMLtext);
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to draw text", error);
+                throw;
+            };
         }
 
         protected void DrawByPixel()
@@ -332,28 +339,36 @@ namespace Ventillo.GameObjects
 
         protected void DrawByPixel(List<DrawObject> Drawobjects)
         {
-            for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
+            try
             {
-                var drawable = Drawobjects.ElementAt(drawableIndex);
-
-                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                for (var drawableIndex = 0; drawableIndex < Drawobjects.Count; drawableIndex++)
                 {
-                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+                    var drawable = Drawobjects.ElementAt(drawableIndex);
 
-                    ConvexShape TempShape = new ConvexShape();
-                    TempShape.Position = new Vector2f().UseVentilloVector(Position);
-                    TempShape.Origin = TempShape.Position;
-                    TempShape.SetPointCount(4);
+                    for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                    {
+                        var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
-                    TempShape.SetPoint(0, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y + 0.5f)));
-                    TempShape.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y + 0.5f)));
-                    TempShape.SetPoint(2, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y - 0.5f)));
-                    TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y - 0.5f)));
+                        ConvexShape TempShape = new ConvexShape();
+                        TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                        TempShape.Origin = TempShape.Position;
+                        TempShape.SetPointCount(4);
 
-                    setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
-                    Engine.window.Draw(TempShape);
+                        TempShape.SetPoint(0, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y + 0.5f)));
+                        TempShape.SetPoint(1, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y + 0.5f)));
+                        TempShape.SetPoint(2, new Vector2f().UseVentilloVector(new Vector(drawPoint.x + 0.5f, drawPoint.y - 0.5f)));
+                        TempShape.SetPoint(3, new Vector2f().UseVentilloVector(new Vector(drawPoint.x - 0.5f, drawPoint.y - 0.5f)));
+
+                        setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                        Engine.window.Draw(TempShape);
+                    }
                 }
             }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to draw by pixel from draw object", error);
+                throw;
+            };
         }
 
         protected void DrawByCircle()
@@ -363,33 +378,48 @@ namespace Ventillo.GameObjects
 
         protected void DrawByCircle(List<DrawObject> DrawObjects)
         {
-            for (var drawableIndex = 0; drawableIndex < DrawObjects.Count; drawableIndex++)
+            try
             {
-                var drawable = DrawObjects.ElementAt(drawableIndex);
-
-                for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                for (var drawableIndex = 0; drawableIndex < DrawObjects.Count; drawableIndex++)
                 {
-                    var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
+                    var drawable = DrawObjects.ElementAt(drawableIndex);
 
-                    CircleShape TempShape = new CircleShape((float)(drawPoint.x));
-                    TempShape.Position = new Vector2f().UseVentilloVector(Position);
-                    TempShape.Origin = new Vector2f().UseVentilloVector(
-                        new Vector(
-                            drawPoint.x,
-                            drawPoint.y
-                        ));
+                    for (var drawPointIndex = 0; drawPointIndex < drawable.DrawPoints.Count; drawPointIndex++)
+                    {
+                        var drawPoint = drawable.DrawPoints.ElementAt(drawPointIndex);
 
-                    setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
-                    Engine.window.Draw(TempShape);
+                        CircleShape TempShape = new CircleShape((float)(drawPoint.x));
+                        TempShape.Position = new Vector2f().UseVentilloVector(Position);
+                        TempShape.Origin = new Vector2f().UseVentilloVector(
+                            new Vector(
+                                drawPoint.x,
+                                drawPoint.y
+                            ));
+
+                        setDrawModes(TempShape, drawable.StrokeColour, drawable.FillColour);
+                        Engine.window.Draw(TempShape);
+                    }
                 }
             }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to draw by circle", error);
+                throw;
+            };
         }
 
         protected void setDrawModes(Shape TempShape, Color StrokeStyle, Color FillStyle)
         {
-            TempShape.OutlineColor = StrokeStyle.GetSFMLColor();
-
-            TempShape.FillColor = FillStyle.GetSFMLColor();
+            try
+            {
+                TempShape.OutlineColor = StrokeStyle.GetSFMLColor();
+                TempShape.FillColor = FillStyle.GetSFMLColor();
+            }
+            catch (Exception error)
+            {
+                Engine.logger.Error("Failed to set draw mode", error);
+                throw;
+            };
         }
     }
 

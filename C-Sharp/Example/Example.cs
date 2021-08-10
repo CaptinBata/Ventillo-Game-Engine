@@ -19,6 +19,11 @@ namespace Example.Game
         {
             Engine.SetWindowTitle("Example Game");
 
+            Engine.logger.Info("Test");
+            Engine.logger.Debug("Test");
+            Engine.logger.Warn("Test");
+            Engine.logger.Error("Test");
+
             Engine.logger.Info("Creating Square Object");
             var square = new Square(new Vector(Engine.playableArea.Max.x / 2, Engine.playableArea.Max.y / 2));
             Engine.logger.Info("Created Square Object", square);
