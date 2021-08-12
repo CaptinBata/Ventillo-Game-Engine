@@ -1,0 +1,57 @@
+default:
+  image: microsoft/dotnet:latest
+
+stages:
+  - get version
+  - build
+  - test
+  - package
+  - push package
+
+Get Version:
+  stage: get version
+  script: echo "VERSION=$(git describe --tags --abbrev=0)" >> version.env
+  artifacts:
+    reports:
+      dotenv: version.env
+  only:
+    - tags
+
+Build:
+  stage: build
+  script: dotnet build C-Sharp/C-Sharp.sln --configuration Release
+
+Build Release:
+  stage: build
+  script: dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+  needs:
+    - job: Get Version
+      artifacts: true
+
+Unit Tests:
+  stage: test
+  script: dotnet test C-Sharp/C-Sharp.sln --configuration Release --no-build
+
+Unit Tests Release:
+  stage: test
+  script: dotnet test C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+  needs:
+    - job: Get Version
+      artifacts: true
+
+Pack Package:
+ stage: package
+ script:
+   - dotnet restore C-Sharp/C-Sharp.sln
+   - dotnet build C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION}
+   - dotnet pack C-Sharp/C-Sharp.sln --configuration Release /p:Version=${VERSION} --no-build --output .
+ artifacts:
+    paths:
+      - Ventillo.Engine.*.nupkg
+
+Push Package:
+  stage: push package
+  script:
+    - dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+    - dotnet nuget add source --username CaptinBata --password ${GITHUB_AUTH} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CaptinBata/index.json"
+    - dotnet nuget push "Ventillo.Engine.${VERSION}.nupkg"  --api-key ${GITHUB_PACKAGE} --source "github"
