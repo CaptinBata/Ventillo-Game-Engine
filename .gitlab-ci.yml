@@ -27,6 +27,8 @@ Build Release:
   needs:
     - job: Get Version
       artifacts: true
+  only:
+    - tags
 
 Unit Tests:
   stage: test
@@ -38,6 +40,8 @@ Unit Tests Release:
   needs:
     - job: Get Version
       artifacts: true
+  only:
+    - tags
 
 Pack Package:
  stage: package
@@ -48,6 +52,11 @@ Pack Package:
  artifacts:
     paths:
       - Ventillo.Engine.*.nupkg
+ needs:
+   - job: Get Version
+     artifacts: true
+ only:
+   - tags
 
 Push Package:
   stage: push package
@@ -55,3 +64,10 @@ Push Package:
     - dotnet nuget push Ventillo.Engine.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
     - dotnet nuget add source --username CaptinBata --password ${GITHUB_AUTH} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CaptinBata/index.json"
     - dotnet nuget push "Ventillo.Engine.${VERSION}.nupkg"  --api-key ${GITHUB_PACKAGE} --source "github"
+  needs:
+    - job: Get Version
+      artifacts: true
+    - job: Pack Package
+      artifacts: true
+  only:
+    - tags
